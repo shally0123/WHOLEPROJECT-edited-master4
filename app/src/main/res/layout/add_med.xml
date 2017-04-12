@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="45dp"
+        android:text="Add Medication"
+        android:textSize="40dp"
+        />
+
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:text="Name of Medication and Dosage:"
+        android:textSize="25dp"
+        />
+    
+    <EditText
+        android:layout_width="500dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="90dp"
+        android:text="Medication and Dosage"
+        android:textSize="25dp"
+        android:id="@+id/addMedDos"
+        />
+    
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="150dp"
+        android:text="Medication ID/Code:"
+        android:textSize="25dp"
+        />
+
+    <EditText
+        android:layout_width="500dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="190dp"
+        android:text="Medication ID/Code"
+        android:textSize="25dp"
+        android:id="@+id/addMedID"
+        />
+    
+    <Button
+        android:layout_width="500dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="250dp"
+        android:text="Save"
+        android:id="@+id/saveMed"
+        />
+
+    <Button
+        android:layout_width="500dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="300dp"
+        android:text="Cancel"
+        android:id="@+id/cancelMed"
+        />
+    
+    
+
+</RelativeLayout>
