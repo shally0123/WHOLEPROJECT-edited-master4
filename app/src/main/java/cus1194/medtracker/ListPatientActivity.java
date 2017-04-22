@@ -7,6 +7,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,13 +47,13 @@ public class ListPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_selection);
 
-        EditText PName = (EditText)findViewById(R.id.Name);
-        EditText SSN = (EditText)findViewById(R.id.SSN);
-        EditText MedHis = (EditText)findViewById(R.id.Med);
-
-        String first=PName.getText().toString();
-        String second=SSN.getText().toString();
-        String third=MedHis.getText().toString();
+//        EditText PName = (EditText)findViewById(R.id.Name);
+//        EditText SSN = (EditText)findViewById(R.id.SSN);
+//        EditText MedHis = (EditText)findViewById(R.id.Med);
+//
+//        String first=PName.getText().toString();
+//        String second=SSN.getText().toString();
+//        String third=MedHis.getText().toString();
 
        // PName.setText(PName.getText().toString());
         //SSN.setText(SSN.getText().toString());
@@ -61,11 +62,22 @@ public class ListPatientActivity extends AppCompatActivity {
 
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
+        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(firebaseAuth.getCurrentUser()!=null){
+            Log.d("firebase getCurrentUser", "We are in");
+            finish();
+            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+        }
+
+
+        Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT);
+
         phyInfo = databaseReference.child(user.getUid());
-        patientInfo = new PatientInfo(first, second, third);
+//        patientInfo = new PatientInfo(first, second, third);
         patientList= phyInfo.child("patientInfo");
-        patientList.setValue(patientInfo);
+//        patientList.setValue(patientInfo);
 
         addPat = (Button)findViewById(R.id.PatientSelection);
       //  b_analysis=(Button)findViewById(R.id.analysis);

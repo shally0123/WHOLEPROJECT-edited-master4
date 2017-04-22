@@ -23,5 +23,19 @@ public class Userinformation{
             this.NPI = NPI;
         }
 
+        /*
+    public String getName(){
+        return name;
+    }
+    public String getAge() {
+        return age;
+    }
 
+    public String getNPI() {
+        return NPI;
+    }
+
+    public String getPostiion() {
+        return postiion;
+    }*/
 }

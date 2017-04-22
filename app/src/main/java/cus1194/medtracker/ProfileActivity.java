@@ -13,8 +13,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -63,8 +66,35 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonLogout.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
 
+        retrieveuserinfo();
+
 
     }
+
+    private void retrieveuserinfo(){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        // Get a reference to our posts
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference(user.getUid()).child("physicianInfo");
+
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Userinformation userinformation = dataSnapshot.getValue(Userinformation.class);
+                editTextName.setText(userinformation.name);
+                editTextAge.setText(userinformation.age);
+                editTextNPI.setText(userinformation.NPI);
+                editTextPosition.setText(userinformation.postiion);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }//retrieve informaiton from google firebase
 
 
     private void saveUserInformation() {
