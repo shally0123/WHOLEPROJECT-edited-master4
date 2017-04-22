@@ -8,6 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by liu on 4/12/17.
  */
@@ -15,20 +21,25 @@ import android.widget.TextView;
 public class addPatient extends AppCompatActivity {
     public EditText PatientName;
     public EditText SSN;
-    public Button btnClick1;
-    public Button btnClick2;
     public TextView MedicalHistory;
+    public Button summit;
+    public Button cancel;
+    private DatabaseReference databaseReference;
+    FirebaseDatabase database;
+    PatientInfo patientInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addpatient);
-        btnClick1 = (Button) findViewById(R.id.Summit);
-        btnClick2 = (Button) findViewById(R.id.Cancel);
+        summit = (Button) findViewById(R.id.Summit);
+        cancel = (Button) findViewById(R.id.Cancel);
         PatientName = (EditText)findViewById(R.id.Name);
         SSN = (EditText) findViewById(R.id.SSN);
 
-        btnClick1.setOnClickListener(new View.OnClickListener() {
+
+        summit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 savePatientinfo();
                 Intent intent1 = new Intent(addPatient.this, ListPatientActivity.class);
@@ -36,7 +47,7 @@ public class addPatient extends AppCompatActivity {
             }
         });
 
-        btnClick2.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
                 Intent intent2 = new Intent(addPatient.this, ListPatientActivity.class);
@@ -49,9 +60,40 @@ public class addPatient extends AppCompatActivity {
 
     private void savePatientinfo()
     {
-        String Pname = btnClick1.getText().toString();
-        String SSNum = btnClick2.getText().toString();
-        String Medhistory = MedicalHistory.getText().toString();
+
+        databaseReference = database.getReference("p_info");
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                patientInfo = dataSnapshot.getValue(PatientInfo.class);
+
+                PatientName.setText(PatientName.getText().toString());
+                SSN.setText(SSN.getText().toString());
+                MedicalHistory.setText(MedicalHistory.getText().toString());
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }

@@ -1,6 +1,7 @@
 package cus1194.medtracker;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +24,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button buttonLogout;
 
     private DatabaseReference databaseReference;
+    private DatabaseReference phyId;
+    private DatabaseReference patientList;
 
     private EditText editTextName, editTextAge, editTextPosition, editTextNPI;
     private Button buttonSave;
@@ -32,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
@@ -45,14 +50,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editTextPosition = (EditText) findViewById(R.id.editTextPosition);
         editTextNPI = (EditText) findViewById(R.id.editTextNPI);
 
+
+
         buttonSave = (Button) findViewById(R.id.buttonSave);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
 
-        textViewUserEmail.setText("Welcome" + user.getEmail());
+        textViewUserEmail.setText("Welcome " + user.getEmail());
 
         buttonLogout.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
@@ -71,7 +77,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        databaseReference.child(user.getUid()).setValue(UserInformation);
+        phyId = databaseReference.child(user.getUid());//.child("physicianId").setValue(UserInformation);//pid
+        phyId.child("physicianInfo").setValue(UserInformation);
 
         Toast.makeText(this, "information saved...", Toast.LENGTH_LONG).show();
     }

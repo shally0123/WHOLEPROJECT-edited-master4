@@ -43,7 +43,7 @@
 
         <TextView
             android:textAlignment="center"
-            android:text="Sign in here"
+            android:text="Has an account? Sign in here"
             android:id="@+id/activitylogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

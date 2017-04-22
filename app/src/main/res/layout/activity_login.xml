@@ -43,7 +43,7 @@
 
         <TextView
             android:textAlignment="center"
-            android:text="not have an account? Signup Here"
+            android:text="not have an account? Sign up Here"
             android:id="@+id/activitysignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
