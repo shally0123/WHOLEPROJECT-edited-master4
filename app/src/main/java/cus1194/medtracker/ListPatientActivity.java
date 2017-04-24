@@ -31,53 +31,32 @@ public class ListPatientActivity extends AppCompatActivity {
 
     Button addPat;
     Button b_analysis;
-    private DatabaseReference databaseReference;
-    private DatabaseReference phyInfo;
-    private DatabaseReference patientList;
-    PatientInfo patientInfo;
+    FirebaseDatabase database;
+//    private DatabaseReference databaseReference;
+    private DatabaseReference phyID;
+//    private DatabaseReference patientList;
 
     private FirebaseAuth firebaseAuth;
-    //private FirebaseDatabase database;
-    EditText PName;
-    EditText SSN;
-    EditText MedHis;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_selection);
 
-//        EditText PName = (EditText)findViewById(R.id.Name);
-//        EditText SSN = (EditText)findViewById(R.id.SSN);
-//        EditText MedHis = (EditText)findViewById(R.id.Med);
-//
-//        String first=PName.getText().toString();
-//        String second=SSN.getText().toString();
-//        String third=MedHis.getText().toString();
-
-       // PName.setText(PName.getText().toString());
-        //SSN.setText(SSN.getText().toString());
-        //MedHis.setText(MedHis.getText().toString());
 
 
-        databaseReference= FirebaseDatabase.getInstance().getReference();
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        if(firebaseAuth.getCurrentUser()!=null){
+        /*if(firebaseAuth.getCurrentUser()!=null){
             Log.d("firebase getCurrentUser", "We are in");
             finish();
             startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-        }
+        }*/
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        phyID = database.getReference( "hxIPBytiRDMpDfCz4VhPPCnUiEy1");
 
-        Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT);
-
-        phyInfo = databaseReference.child(user.getUid());
-//        patientInfo = new PatientInfo(first, second, third);
-        patientList= phyInfo.child("patientInfo");
-//        patientList.setValue(patientInfo);
 
         addPat = (Button)findViewById(R.id.PatientSelection);
       //  b_analysis=(Button)findViewById(R.id.analysis);

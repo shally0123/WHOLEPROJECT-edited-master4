@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,9 @@ public class addPatient extends AppCompatActivity {
     private DatabaseReference databaseReference;
     FirebaseDatabase database;
     PatientInfo patientInfo;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference phyID;
+    private DatabaseReference patientList;
 
 
     @Override
@@ -37,6 +42,9 @@ public class addPatient extends AppCompatActivity {
         cancel = (Button) findViewById(R.id.Cancel);
         PatientName = (EditText)findViewById(R.id.Name);
         SSN = (EditText) findViewById(R.id.SSN);
+        MedicalHistory= (EditText)findViewById(R.id.MedHis);
+
+
 
 
         summit.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +68,8 @@ public class addPatient extends AppCompatActivity {
 
     private void savePatientinfo()
     {
-
-        databaseReference = database.getReference("p_info");
+/*
+        databaseReference = database.getReference("patientInfo");
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -94,7 +102,22 @@ public class addPatient extends AppCompatActivity {
 
             }
         });
+*/
+        String PN = PatientName.getText().toString();
+        String SS = SSN.getText().toString();
+        String MH = MedicalHistory.getText().toString();
 
+
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        phyID = database.getReference(user.getUid()/* "hxIPBytiRDMpDfCz4VhPPCnUiEy1"*/);
+        patientList = phyID.child("patientList");
+
+        PatientInfo PatientInfo = new PatientInfo(PN, SS, MH);
+
+        patientList.child("patientInfo").setValue(PatientInfo);
 
     }
 

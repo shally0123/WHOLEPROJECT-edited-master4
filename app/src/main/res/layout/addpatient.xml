@@ -22,7 +22,7 @@
         android:text="SSN" />
 
     <EditText
-        android:id="@+id/Med"
+        android:id="@+id/MedHis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
