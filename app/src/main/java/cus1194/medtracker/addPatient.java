@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by liu on 4/12/17.
@@ -23,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class addPatient extends AppCompatActivity {
     public EditText PatientName;
     public EditText SSN;
-    public TextView MedicalHistory;
+    public EditText MedicalHistory;
     public Button summit;
     public Button cancel;
     private DatabaseReference databaseReference;
@@ -45,8 +46,6 @@ public class addPatient extends AppCompatActivity {
         MedicalHistory= (EditText)findViewById(R.id.MedHis);
 
 
-
-
         summit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 savePatientinfo();
@@ -63,46 +62,12 @@ public class addPatient extends AppCompatActivity {
             }
         });
 
-
+        //retrievePatientInfo();
     }
 
     private void savePatientinfo()
     {
-/*
-        databaseReference = database.getReference("patientInfo");
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                patientInfo = dataSnapshot.getValue(PatientInfo.class);
-
-                PatientName.setText(PatientName.getText().toString());
-                SSN.setText(SSN.getText().toString());
-                MedicalHistory.setText(MedicalHistory.getText().toString());
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
         String PN = PatientName.getText().toString();
         String SS = SSN.getText().toString();
         String MH = MedicalHistory.getText().toString();
@@ -117,10 +82,38 @@ public class addPatient extends AppCompatActivity {
 
         PatientInfo PatientInfo = new PatientInfo(PN, SS, MH);
 
-        patientList.child("patientInfo").setValue(PatientInfo);
+        DatabaseReference patientRef = patientList.push();
+        patientRef.setValue(PatientInfo);
+        String patientId = patientRef.getKey();
 
     }
+    /*
+private void retrievePatientInfo(){
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+    // Get a reference to our posts
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference(user.getUid()).child("patientInfo");
 
+    // Attach a listener to read the data at our posts reference
+    ref.addValueEventListener(new ValueEventListener() {
+
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            PatientInfo patientinfo = dataSnapshot.getValue(PatientInfo.class);
+            PatientName.setText(patientinfo.PName);
+            SSN.setText(patientinfo.SSN);
+            MedicalHistory.setText(patientinfo.MedHis);
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            System.out.println("The read failed: " + databaseError.getCode());
+        }
+    });
+}//retrieve informaiton from google firebase
+*/
 }
+
 
 

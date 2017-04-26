@@ -107,7 +107,7 @@ public class PatientCurrentFragment extends Fragment
         medicationInfo = patientName.child("medicationInfo");
 
 
-        medStatus = new ArrayList<String>();
+        //medStatus = new ArrayList<String>();
         //medStatus.add(lbListHeader.toString());
 
         medicationInfo.addValueEventListener(new ValueEventListener() {
@@ -171,8 +171,9 @@ public class PatientCurrentFragment extends Fragment
 
 
 
-        listAdapter = new ExpandableListAdapter(getContext(), medStatus, medications);
-        listView.setAdapter(listAdapter);
+        //listAdapter = new ExpandableListAdapter(getContext(), medStatus, medications);
+        //
+        // listView.setAdapter(listAdapter);
 
         addMed.setOnClickListener(new View.OnClickListener()
         {
