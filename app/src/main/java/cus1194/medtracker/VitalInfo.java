@@ -8,18 +8,20 @@ public class VitalInfo
 {
 
     public String Time;
-    public String BloodP;
+    public String BloodPHigh;
+    public String BloodPLow;
     public String Weight;
 
     public VitalInfo (){
         //nothing to put here for blank constructor
     }
 
-    public VitalInfo(String Time, String BloodP, String Weight)
+    public VitalInfo(String Time, String BloodPHigh, String BloodPLow, String Weight)
     {
 
         this.Time= Time;
-        this.BloodP=BloodP;
+        this.BloodPHigh=BloodPHigh;
+        this.BloodPLow=BloodPLow;
         this.Weight=Weight;
 
     }

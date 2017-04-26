@@ -37,6 +37,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     private HashMap<String,List<String>> medications;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
+    private DatabaseReference phyID;
+    private DatabaseReference patientList;
+    private DatabaseReference patientName;
     private DatabaseReference medInfoDatabase;
     private DatabaseReference nurseInfoReference;
     private final Set<Pair<Long, Long>> mCheckedItems = new HashSet<Pair<Long, Long>>();
@@ -86,7 +89,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        //String headerTitle = (String)getGroup(i);
+        //String Header = (String) getGroup(i);
         if(view==null)
         {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -96,7 +99,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        medInfoDatabase = database.getReference(user.getUid()).child("medicationInfo");
+        phyID = database.getReference(user.getUid());
+        patientList = phyID.child("patientList");
+        patientName = patientList.child("patientName");
+        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
 
 
 
@@ -116,6 +122,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         });
 
         lbListHeader.setText(medInfo.MedName);
+        //Header = lbListHeader.toString().trim();
         return view;
     }
 
@@ -125,8 +132,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
-        medInfoDatabase = database.getReference(user.getUid()).child("medicationInfo");
-        nurseInfoReference = database.getReference(user.getUid()).child("nurseInfo");
+        phyID = database.getReference(user.getUid());
+        patientList = phyID.child("patientList");
+        patientName = patientList.child("patientName");
+        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
+        nurseInfoReference = database.getReference("patientName").child("nurseInfo");
 
         if (view==null)
         {
@@ -163,7 +173,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
                 if(given.isChecked())
                 {
-                    NPInfo.Given = true;
+                    //NPInfo.Given = true;
+                    given.equals(true);
                 }
 
             }

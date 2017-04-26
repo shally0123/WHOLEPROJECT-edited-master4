@@ -23,13 +23,22 @@
         android:layout_marginTop="40dp"
         android:inputType="numberDecimal"
         android:hint="Blood Pressure"
-        android:id="@+id/bloodPressureEdit" />
+        android:id="@+id/bloodPressureHighEdit" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="80dp"
+        android:inputType="numberDecimal"
+        android:hint="Blood Pressure"
+        android:id="@+id/bloodPressureLowEdit" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="120dp"
         android:inputType="numberDecimal"
         android:hint="Weight"
         android:id="@+id/weightEdit"
@@ -38,7 +47,7 @@
     <Button
         android:layout_width="180dp"
         android:layout_height="50dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="160dp"
         android:text="Add Medication"
         android:id="@+id/addMed"
         />
@@ -46,7 +55,7 @@
     <Button
         android:layout_width="180dp"
         android:layout_height="50dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="160dp"
         android:layout_marginLeft="205dp"
         android:text="Edit Medication"
         android:id="@+id/edMed"
@@ -59,7 +68,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="210dp"
         android:dividerHeight="1dp" />
 
 
