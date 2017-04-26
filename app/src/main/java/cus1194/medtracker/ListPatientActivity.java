@@ -66,7 +66,7 @@ public class ListPatientActivity extends AppCompatActivity {
        //     }
       //  });
 
-       ListView listView = (ListView)findViewById(R.id.List);
+        ListView listView = (ListView)findViewById(R.id.List);
         //listView.setTextFilterEnabled(true);
 
         //Query queryPName = patientInfo.orderByChild("PName");
