@@ -7,43 +7,49 @@ package cus1194.medtracker;
 public class PatientInfo
 {
 
-    public String PName;
-    public String SSN;
-    public String MedHis;
+    private String pName;
+    private String ssn;
+    private String medHis;
 
-    public PatientInfo(String PName, String SSN, String MedHis)
-    {
-        this.PName=PName;
-        this.SSN=SSN;
-        this.MedHis=MedHis;
+    public PatientInfo(){
+        pName = null;
+        ssn = null;
+        medHis = null;
     }
 
-   // public String getPName(){
-   //     return PName;
-   // }
+    public PatientInfo(String pName, String ssn, String MedHis)
+    {
+        this.pName = pName;
+        this.ssn = ssn;
+        this.medHis =MedHis;
+    }
 
-   // public void setPName(String PName)
-   // {
-   //     this.PName=PName;
-  //  }
+    public String getPName(){
+        return pName;
+    }
 
-  //  public String getSSN(){
-  //      return SSN;
-  //  }
+    public void setPName(String pName)
+    {
+        this.pName = pName;
+    }
 
-  //  public void setSSN(String SSN)
-  //  {
-  //      this.SSN=SSN;
-  //  }
+    public String getSSN(){
+        return ssn;
+    }
 
-  //  public String getMedHis(){
- //       return MedHis;
-//    }
+    public void setSsn(String ssn)
+    {
+        this.ssn = ssn;
+    }
 
-  //  public void setMedHis(String MedHis)
-  //  {
-  //      this.MedHis=MedHis;
-  //  }
+    public String getMedHis(){
+        return medHis;
+    }
+
+    public void setMedHis(String MedHis)
+    {
+        this.medHis =MedHis;
+    }
 }
 
 

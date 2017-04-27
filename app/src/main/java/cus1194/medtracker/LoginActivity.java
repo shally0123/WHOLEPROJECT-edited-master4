@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view){
         if(view==buttonSignin){
             userLogin();
-            startActivity(new Intent(this, ListPatientActivity.class));
+            startActivity(new Intent(this, PatientMain.class));
         }
 
         if(view==textViewSignup){

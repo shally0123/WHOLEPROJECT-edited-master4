@@ -84,7 +84,7 @@ public class addPatient extends AppCompatActivity {
 
         DatabaseReference patientRef = patientList.push();
         patientRef.setValue(PatientInfo);
-        String patientId = patientRef.getKey();
+        String patient = patientRef.getKey();
 
     }
     /*

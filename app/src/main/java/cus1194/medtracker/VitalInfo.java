@@ -7,10 +7,10 @@ package cus1194.medtracker;
 public class VitalInfo
 {
 
-    public String Time;
-    public String BloodPHigh;
-    public String BloodPLow;
-    public String Weight;
+    public String time;
+    public String bloodPHigh;
+    public String bloodPLow;
+    public String weight;
 
     public VitalInfo (){
         //nothing to put here for blank constructor
@@ -19,10 +19,10 @@ public class VitalInfo
     public VitalInfo(String Time, String BloodPHigh, String BloodPLow, String Weight)
     {
 
-        this.Time= Time;
-        this.BloodPHigh=BloodPHigh;
-        this.BloodPLow=BloodPLow;
-        this.Weight=Weight;
+        this.time = Time;
+        this.bloodPHigh =BloodPHigh;
+        this.bloodPLow =BloodPLow;
+        this.weight =Weight;
 
     }
 

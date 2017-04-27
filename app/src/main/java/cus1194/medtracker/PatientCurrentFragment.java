@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static cus1194.medtracker.ExpandableListHeaderInfo.getInfo;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,16 +102,16 @@ public class PatientCurrentFragment extends Fragment
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        phyID = database.getReference(user.getUid());
+        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1"/*user.getUid()*/);
         patientList = phyID.child("patientList");
-        patientName = patientList.child("patientName");
+        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
         vitalInfo = patientName.child("vitalInfo");
         medicationInfo = patientName.child("medicationInfo");
 
 
         //medStatus = new ArrayList<String>();
         //medStatus.add(lbListHeader.toString());
-
+/*
         medicationInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -154,13 +156,28 @@ public class PatientCurrentFragment extends Fragment
         });
 
 
-        vitalInfo.addValueEventListener(new ValueEventListener() {
+        vitalInfo.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 VitalInfo vital = dataSnapshot.getValue(VitalInfo.class);
-                bph.setText(vital.BloodPHigh);
-                bpl.setText(vital.BloodPLow);
-                w.setText(vital.Weight);
+                bph.setText(vital.bloodPHigh);
+                bpl.setText(vital.bloodPLow);
+                w.setText(vital.weight);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -168,12 +185,12 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
+*/
+        medications = ExpandableListHeaderInfo.getInfo();
+        medStatus = new ArrayList<String>(medications.keySet());
 
-
-
-        //listAdapter = new ExpandableListAdapter(getContext(), medStatus, medications);
-        //
-        // listView.setAdapter(listAdapter);
+        listAdapter = new ExpandableListAdapter(getContext(), medStatus, medications);
+        listView.setAdapter(listAdapter);
 
         addMed.setOnClickListener(new View.OnClickListener()
         {

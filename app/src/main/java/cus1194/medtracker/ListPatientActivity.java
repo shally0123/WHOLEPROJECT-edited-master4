@@ -5,11 +5,14 @@ package cus1194.medtracker;
  */
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,11 +24,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ListPatientActivity extends AppCompatActivity {
 
-   static int i = 0;
+   //static int i = 0;
     Button addPat;
     Button b_analysis;
     FirebaseDatabase database;
@@ -49,8 +53,8 @@ public class ListPatientActivity extends AppCompatActivity {
 
         phyID = database.getReference( "hxIPBytiRDMpDfCz4VhPPCnUiEy1");
         patientList = phyID.child("patientList");
-        patientName = patientList.child("patientName");
-        patientInfo = patientList.child("patientInfo");
+//        patientName = patientList.child("patientName");
+//        patientInfo = patientList.child("patientInfo");
 
         final List values = new ArrayList();
         //PatientInfo[] values = new PatientInfo[100];
@@ -66,17 +70,34 @@ public class ListPatientActivity extends AppCompatActivity {
        //     }
       //  });
 
-        ListView listView = (ListView)findViewById(R.id.List);
+        ListView listView = (ListView)findViewById(R.id.patentList);
         //listView.setTextFilterEnabled(true);
 
         //Query queryPName = patientInfo.orderByChild("PName");
         patientList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot patientData : dataSnapshot.getChildren()) {
+                Toast.makeText(getBaseContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT);
+                Log.d("KEY INFO", dataSnapshot.getKey().toString());
+
+//                PatientInfo pinfo = dataSnapshot.getValue(PatientInfo.class);
+//                    values.add(pinfo);
+
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
+//
+                for (DataSnapshot patientData: children){
+                    Log.d("KEY INFO", patientData.getKey().toString());
+
+
                     PatientInfo pinfo = patientData.getValue(PatientInfo.class);
+                    Log.d("Patient info:",pinfo.getPName());
                     values.add(pinfo);
                 }
+
+//                for (DataSnapshot patientData : dataSnapshot.getChildren()) {
+//                    PatientInfo pinfo = patientData.getValue(PatientInfo.class);
+//                    values.add(pinfo);
+//                }
 
             }
 
@@ -89,6 +110,7 @@ public class ListPatientActivity extends AppCompatActivity {
 
         ArrayAdapter<String> something = new ArrayAdapter<String>(this,R.layout.patient_selection, values);
         listView.setAdapter(something);
+
 
 
       //  listView.setOnItemClickListener(new OnItemClickListener() {

@@ -24,7 +24,7 @@
         />
 
     <ListView
-        android:id="@+id/List"
+        android:id="@+id/patentList"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_alignParentLeft="true"

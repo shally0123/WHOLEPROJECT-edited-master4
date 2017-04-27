@@ -97,22 +97,38 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         }
         final TextView lbListHeader = (TextView)view.findViewById(R.id.lbListHeader);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        phyID = database.getReference(user.getUid());
+        phyID = database.getReference("");
         patientList = phyID.child("patientList");
-        patientName = patientList.child("patientName");
-        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
+
+        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
+        medInfoDatabase = database.getReference("").child("medicationInfo");
 
 
 
         lbListHeader.setTypeface(null, Typeface.BOLD);
 
-        medInfoDatabase.addValueEventListener(new ValueEventListener() {
+        medInfoDatabase.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 medInfo = dataSnapshot.getValue(MedInfo.class);
                 lbListHeader.setText(medInfo.MedName);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -121,7 +137,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
             }
         });
 
-        lbListHeader.setText(medInfo.MedName);
+        //lbListHeader.setText(medInfo.MedName);
         //Header = lbListHeader.toString().trim();
         return view;
     }
@@ -130,13 +146,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     public View getChildView(int i, int j, boolean b, View view, ViewGroup viewGroup) {
         //final String childText = (String)getChild(i,j);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
-        phyID = database.getReference(user.getUid());
+        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1");
         patientList = phyID.child("patientList");
-        patientName = patientList.child("patientName");
-        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
-        nurseInfoReference = database.getReference("patientName").child("nurseInfo");
+        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
+        medInfoDatabase = database.getReference("-Kiee9KORmWUiRX9CAdP").child("medicationInfo");
+        nurseInfoReference = database.getReference("-Kiee9KORmWUiRX9CAdP").child("nurseInfo");
 
         if (view==null)
         {
@@ -151,12 +167,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         final CheckBox given = (CheckBox)view.findViewById(R.id.given);
 
 
-        medInfoDatabase.addValueEventListener(new ValueEventListener() {
+        medInfoDatabase.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 medInfo = dataSnapshot.getValue(MedInfo.class);
                 edName.setText(medInfo.MedName);
                 edID.setText(medInfo.MedID);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -164,6 +195,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
             }
         });
+
 
         nurseInfoReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -200,11 +232,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
             }
         });
 
-        nurseInfoReference.addValueEventListener(new ValueEventListener() {
+        nurseInfoReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 NPInfo = dataSnapshot.getValue(NursePhyInfo.class);
                 edNurse.setText(NPInfo.Name);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

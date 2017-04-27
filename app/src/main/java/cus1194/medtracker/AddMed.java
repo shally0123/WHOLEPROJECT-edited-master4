@@ -27,6 +27,10 @@ public class AddMed extends AppCompatActivity
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference phyID;
+    private DatabaseReference patientList;
+    private DatabaseReference patientName;
 
 
     @Override
@@ -72,13 +76,17 @@ public class AddMed extends AppCompatActivity
         String name = addMedDos.getText().toString().trim();
         String id = addMedID.getText().toString().trim();
 
+        database = FirebaseDatabase.getInstance().getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1");
+        patientList = phyID.child("patientList");
+        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
+
         MedInfo MedInfo = new MedInfo(name, id);
+        patientName.child("medicationInfo").setValue(MedInfo);
 
-        FirebaseUser newMed = firebaseAuth.getCurrentUser();
-
-        databaseReference.child(newMed.getUid()).setValue(MedInfo);
-
-        Toast.makeText(this, "Medication added!", Toast.LENGTH_LONG).show();
     }
 
 
