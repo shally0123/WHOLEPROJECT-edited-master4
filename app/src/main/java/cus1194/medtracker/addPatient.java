@@ -75,7 +75,7 @@ public class addPatient extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
 
         phyID = database.getReference(user.getUid()/* "hxIPBytiRDMpDfCz4VhPPCnUiEy1"*/);
         patientList = phyID.child("patientList");

@@ -52,6 +52,7 @@ public class PatientCurrentFragment extends Fragment
     Button addMed;
     Button edMed;
     FirebaseDatabase database;
+    private DatabaseReference databaseReference;
     private DatabaseReference phyID;
     private DatabaseReference patientList;
     private DatabaseReference patientName;
@@ -98,23 +99,24 @@ public class PatientCurrentFragment extends Fragment
 
 
 
-        database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        //FirebaseUser user = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        //firebaseAuth = FirebaseAuth.getInstance();
+        //FirebaseUser userN = firebaseAuth.getCurrentUser();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        phyID = database.getReference(user.getUid());
+        phyID = databaseReference.child(user.getUid());
         patientList = phyID.child("patientList");
-        String patientN=patientList.getKey();
-        patientName=patientList.child(patientN);
+        //String patientN=patientList.getKey();
+        patientName=patientList.child("patientName");
+
         vitalInfo = patientName.child("vitalInfo");
         medicationInfo = patientName.child("medicationInfo");
 
-
+/*
         //medStatus = new ArrayList<String>();
         //medStatus.add(lbListHeader.toString());
-/*
+
         medicationInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -157,12 +159,19 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
-*/
+
 
         vitalInfo.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 VitalInfo vital = dataSnapshot.getValue(VitalInfo.class);
+
+                String h = bph.toString();
+                String l = bpl.toString();
+                String ww = w.toString();
+                String t = "today";
+
+                //VitalInfo vital = new VitalInfo(t,h,l,ww);
 
                 bph.setText(vital.bloodPHigh);
                 bpl.setText(vital.bloodPLow);
@@ -188,8 +197,7 @@ public class PatientCurrentFragment extends Fragment
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
+*/
         medications = ExpandableListHeaderInfo.getInfo();
         medStatus = new ArrayList<String>(medications.keySet());
 

@@ -34,11 +34,11 @@ public class ExpandableListHeaderInfo
     {
 
         database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
 
 
-        phyId = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1");
+        phyId = database.getReference(user.getUid());
         patientList = phyId.child("patientList");
         patientName = patientList.child("patientName");
         medicationInfo = patientName.child("medicationInfo");
@@ -46,7 +46,7 @@ public class ExpandableListHeaderInfo
         medicationInfo.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                medInfo = dataSnapshot.getValue(MedInfo.class);
+                medInfo = dataSnapshot.getValue(MedInfo.class);//problem string to object class-->we could not retrive info
                 H = medInfo.MedName;
             }
 

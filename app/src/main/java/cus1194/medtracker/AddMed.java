@@ -25,9 +25,9 @@ public class AddMed extends AppCompatActivity
     Button save;
     Button cancel;
 
-    private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
     private DatabaseReference phyID;
     private DatabaseReference patientList;
     private DatabaseReference patientName;
@@ -40,10 +40,11 @@ public class AddMed extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_med);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //databaseReference = FirebaseDatabase.getInstance().getReference();
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         addMedDos = (EditText)findViewById(R.id.addMedDos);
         addMedID = (EditText)findViewById(R.id.addMedID);
@@ -76,13 +77,14 @@ public class AddMed extends AppCompatActivity
         String name = addMedDos.getText().toString().trim();
         String id = addMedID.getText().toString().trim();
 
-        database = FirebaseDatabase.getInstance().getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getInstance().getReference();
+        //firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1");
+        phyID = databaseReference.child(user.getUid());
         patientList = phyID.child("patientList");
-        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
+        patientName = patientList.child("patientName");
 
         MedInfo MedInfo = new MedInfo(name, id);
         patientName.child("medicationInfo").setValue(MedInfo);

@@ -97,13 +97,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         }
         final TextView lbListHeader = (TextView)view.findViewById(R.id.lbListHeader);
 
-        //FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        phyID = database.getReference("");
+        phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
 
-        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
-        medInfoDatabase = database.getReference("").child("medicationInfo");
+        patientName = patientList.child("patientName");
+        medInfoDatabase = patientName.child("medicationInfo");
 
 
 
@@ -146,13 +146,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     public View getChildView(int i, int j, boolean b, View view, ViewGroup viewGroup) {
         //final String childText = (String)getChild(i,j);
 
-        //FirebaseUser user = firebaseAuth.getCurrentUser();
-        firebaseAuth = FirebaseAuth.getInstance();
-        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
-        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
-        medInfoDatabase = database.getReference("-Kiee9KORmWUiRX9CAdP").child("medicationInfo");
-        nurseInfoReference = database.getReference("-Kiee9KORmWUiRX9CAdP").child("nurseInfo");
+        patientName = patientList.child("patientName");
+        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
+        nurseInfoReference = database.getReference("patientName").child("nurseInfo");
 
         if (view==null)
         {
