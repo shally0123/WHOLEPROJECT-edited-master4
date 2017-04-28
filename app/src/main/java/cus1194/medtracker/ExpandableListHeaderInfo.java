@@ -1,5 +1,7 @@
 package cus1194.medtracker;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -43,25 +45,13 @@ public class ExpandableListHeaderInfo
         patientName = patientList.child("patientName");
         medicationInfo = patientName.child("medicationInfo");
 
-        medicationInfo.addChildEventListener(new ChildEventListener() {
+        final MedInfo medInfoObject = new MedInfo();
+
+        medicationInfo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                medInfo = dataSnapshot.getValue(MedInfo.class);//problem string to object class-->we could not retrive info
-                H = medInfo.MedName;
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                medInfoObject.MedID = dataSnapshot.child("MedID").getValue(String.class);
+                Log.d("MedID:",medInfoObject.MedID+" welcome");
 
             }
 
@@ -69,7 +59,7 @@ public class ExpandableListHeaderInfo
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        } );
+        });
 
         HashMap<String, List<String >> headerInfo = new HashMap<String , List<String >>();
 

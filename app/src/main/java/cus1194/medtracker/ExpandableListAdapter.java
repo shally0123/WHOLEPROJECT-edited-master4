@@ -2,6 +2,7 @@ package cus1194.medtracker;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import db.DbAccess;
 
 /**
  * Created by pruan086 on 3/7/2017.
@@ -109,26 +112,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
         lbListHeader.setTypeface(null, Typeface.BOLD);
 
-        medInfoDatabase.addChildEventListener(new ChildEventListener() {
+        medInfoDatabase.addValueEventListener(new ValueEventListener() {
+
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 medInfo = dataSnapshot.getValue(MedInfo.class);
                 lbListHeader.setText(medInfo.MedName);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -152,7 +141,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
         patientName = patientList.child("patientName");
-        medInfoDatabase = database.getReference("patientName").child("medicationInfo");
+        medInfoDatabase = phyID.child("patientList").child("patientName").child("medicationInfo");
         nurseInfoReference = database.getReference("patientName").child("nurseInfo");
 
         if (view==null)
@@ -167,27 +156,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         final EditText edNurse = (EditText)view.findViewById(R.id.editView3);
         final CheckBox given = (CheckBox)view.findViewById(R.id.given);
 
+        final MedInfo medInfoObject = new MedInfo();
 
-        medInfoDatabase.addChildEventListener(new ChildEventListener() {
+        medInfoDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                medInfo = dataSnapshot.getValue(MedInfo.class);
-                edName.setText(medInfo.MedName);
-                edID.setText(medInfo.MedID);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                medInfoObject.MedID = dataSnapshot.child("MedID").getValue(String.class);
+                medInfoObject.MedName = dataSnapshot.child("MedName").getValue(String.class);
+                edName.setText(medInfoObject.MedName);
+                edID.setText(medInfoObject.MedID);
+                Log.d("MedID:",medInfoObject.MedID+" welcome");
 
             }
 
