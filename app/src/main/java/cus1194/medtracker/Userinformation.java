@@ -7,16 +7,16 @@ package cus1194.medtracker;
 public class Userinformation{
 
     public String name;
-    public String age;
+    public int age;
     public String postiion;
-    public String NPI;
+    public int NPI;
 
     public Userinformation(){
 
     }
 
 
-        public Userinformation(String name, String age, String postiion, String NPI) {
+        public Userinformation(String name, int age, String postiion, int NPI) {
             this.name = name;
             this.age = age;
             this.postiion = postiion;

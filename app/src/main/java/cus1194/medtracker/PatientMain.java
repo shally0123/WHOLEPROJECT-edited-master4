@@ -6,8 +6,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by pruan086 on 3/7/2017.
@@ -27,6 +31,11 @@ public class PatientMain extends AppCompatActivity  {
 
         super.onCreate(savedIntanceState);
         setContentView(R.layout.patient_main);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String name = user.getDisplayName();
+        String uid = user.getUid();
+        Log.v("IN PATIENT MAIN:", uid);
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);

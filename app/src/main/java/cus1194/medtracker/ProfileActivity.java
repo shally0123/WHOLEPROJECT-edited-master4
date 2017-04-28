@@ -39,6 +39,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -67,13 +69,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonLogout.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
 
-        retrieveuserinfo();
+        //retrieveuserinfo();
 
 
     }
-
+/*
     private void retrieveuserinfo(){
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Get a reference to our posts
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference(user.getUid()).child("physicianInfo");
@@ -110,13 +112,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }//retrieve informaiton from google firebase
-
+*/
 
     private void saveUserInformation() {
         String name = editTextName.getText().toString().trim();
-        String age = editTextAge.getText().toString().trim();
+        int age = Integer.parseInt(editTextAge.getText().toString().trim());
         String position = editTextPosition.getText().toString().trim();
-        String NPI = editTextNPI.getText().toString().trim();
+        int NPI = Integer.parseInt(editTextNPI.getText().toString().trim());
 
         Userinformation UserInformation = new Userinformation(name, age, position, NPI);
 

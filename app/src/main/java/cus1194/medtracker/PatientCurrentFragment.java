@@ -100,11 +100,14 @@ public class PatientCurrentFragment extends Fragment
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        phyID = database.getReference("hxIPBytiRDMpDfCz4VhPPCnUiEy1"/*user.getUid()*/);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
-        patientName = patientList.child("-Kiee9KORmWUiRX9CAdP");
+        String patientN=patientList.getKey();
+        patientName=patientList.child(patientN);
         vitalInfo = patientName.child("vitalInfo");
         medicationInfo = patientName.child("medicationInfo");
 
@@ -154,12 +157,13 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
-
+*/
 
         vitalInfo.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 VitalInfo vital = dataSnapshot.getValue(VitalInfo.class);
+
                 bph.setText(vital.bloodPHigh);
                 bpl.setText(vital.bloodPLow);
                 w.setText(vital.weight);
@@ -185,7 +189,7 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
-*/
+
         medications = ExpandableListHeaderInfo.getInfo();
         medStatus = new ArrayList<String>(medications.keySet());
 
