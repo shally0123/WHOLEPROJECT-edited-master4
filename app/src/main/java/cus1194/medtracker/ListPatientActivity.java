@@ -29,9 +29,7 @@ import java.util.List;
 
 public class ListPatientActivity extends AppCompatActivity {
 
-   //static int i = 0;
     Button addPat;
-    Button b_analysis;
     FirebaseDatabase database;
 //    private DatabaseReference databaseReference;
     private DatabaseReference phyID;
@@ -41,23 +39,30 @@ public class ListPatientActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    ListView listView;
+    ArrayList<PatientInfo> values;
+    PatientInfo[] patientarray;
+    String[] patientsString;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_selection);
 
+        values = new ArrayList<PatientInfo>();
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        phyID = database.getReference( "hxIPBytiRDMpDfCz4VhPPCnUiEy1");
+        phyID = database.getReference( user.getUid()/*"hxIPBytiRDMpDfCz4VhPPCnUiEy1"*/);
         patientList = phyID.child("patientList");
-//        patientName = patientList.child("patientName");
-//        patientInfo = patientList.child("patientInfo");
+        //patientName = patientList.child("patientName");
+        //patientInfo = patientList.child("patientInfo");
 
-        final List values = new ArrayList();
-        //PatientInfo[] values = new PatientInfo[100];
+
+
 
         addPat = (Button)findViewById(R.id.PatientSelection);
       //  b_analysis=(Button)findViewById(R.id.analysis);
@@ -70,55 +75,38 @@ public class ListPatientActivity extends AppCompatActivity {
        //     }
       //  });
 
-        ListView listView = (ListView)findViewById(R.id.patentList);
-        //listView.setTextFilterEnabled(true);
+        listView = (ListView)findViewById(R.id.patientList);
 
-        //Query queryPName = patientInfo.orderByChild("PName");
         patientList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getBaseContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT);
                 Log.d("KEY INFO", dataSnapshot.getKey().toString());
 
-//                PatientInfo pinfo = dataSnapshot.getValue(PatientInfo.class);
-//                    values.add(pinfo);
 
                 Iterable <DataSnapshot> children = dataSnapshot.getChildren();
-//
                 for (DataSnapshot patientData: children){
                     Log.d("KEY INFO", patientData.getKey().toString());
 
-
                     PatientInfo pinfo = patientData.getValue(PatientInfo.class);
-                    Log.d("Patient info:",pinfo.getPName());
                     values.add(pinfo);
+
                 }
 
-//                for (DataSnapshot patientData : dataSnapshot.getChildren()) {
-//                    PatientInfo pinfo = patientData.getValue(PatientInfo.class);
-//                    values.add(pinfo);
-//                }
+
+                addToArrayList();
+
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+
             }
         });
 
 
-        ArrayAdapter<String> something = new ArrayAdapter<String>(this,R.layout.patient_selection, values);
-        listView.setAdapter(something);
-
-
-
-      //  listView.setOnItemClickListener(new OnItemClickListener() {
-      //      public void onItemClick(AdapterView<?> parent, View view,
-     //                               int position, long id) {
-//
-     //       }
-     //   });
 
         addPat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +118,28 @@ public class ListPatientActivity extends AppCompatActivity {
 
 
     }
+
+    public void addToArrayList() {
+        for (int i = 0; i < values.size(); i++) {
+            if (values.get(i) != null)
+                Log.d("Value Size is", values.size() + " ");
+        }
+
+        patientarray = values.toArray(new PatientInfo[values.size()]);
+        patientsString = new String [patientarray.length];
+
+
+        for (int i = 0; i < patientarray.length; i++) {
+            Log.d("PatientArray", patientarray[i].getPName() + " ");
+            patientsString[i] = patientarray[i].getPName().toString();
+        }
+
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listviewtest, patientsString);
+            listView.setAdapter(adapter);
+
+        }
+
 
 }
 

@@ -83,6 +83,7 @@ public class graph extends AppCompatActivity {
                 new DataPoint(0, 1),
                 new DataPoint(1, 0),
                 new DataPoint(2, 0)//HOW TO LINKED WITH input DATA?
+                //new DataPoint(m1.getTime(),m1.getWei)
         });
         graph_tracker.addSeries(series_four);
         series_four.setDrawDataPoints(true);

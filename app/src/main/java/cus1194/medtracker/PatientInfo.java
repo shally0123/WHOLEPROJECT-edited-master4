@@ -10,6 +10,8 @@ public class PatientInfo
     private String pName;
     private String ssn;
     private String medHis;
+    private String vitalInfo;
+    private String medicationInfo;
 
     public PatientInfo(){
         pName = null;
@@ -17,11 +19,13 @@ public class PatientInfo
         medHis = null;
     }
 
-    public PatientInfo(String pName, String ssn, String MedHis)
+    public PatientInfo(String pName, String ssn, String MedHis/*,String vitalInfo,String medicationInfo*/)
     {
         this.pName = pName;
         this.ssn = ssn;
         this.medHis =MedHis;
+      //  this.vitalInfo=vitalInfo;
+        //this.medicationInfo=medicationInfo;
     }
 
     public String getPName(){
@@ -50,6 +54,22 @@ public class PatientInfo
     {
         this.medHis =MedHis;
     }
+
+   // public String getVitalInfo(){
+     //   return vitalInfo;
+    //}
+
+    //public void setVitalInfo(String VitalInfo)
+    //{
+     //   this.vitalInfo =VitalInfo;
+    //}
+
+    //public String getmedicationInfo(){
+      //  return medicationInfo;
+    //}
+
+    //public void setmedicationInfo(String MedicationInfo) {this.medicationInfo =MedicationInfo;}
+
 }
 
 

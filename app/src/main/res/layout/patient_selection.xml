@@ -16,15 +16,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/analysis"
-        android:text="analysis"
-        />
 
     <ListView
-        android:id="@+id/patentList"
+        android:id="@+id/patientList"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_alignParentLeft="true"

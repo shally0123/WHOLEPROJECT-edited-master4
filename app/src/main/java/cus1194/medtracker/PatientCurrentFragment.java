@@ -50,7 +50,7 @@ public class PatientCurrentFragment extends Fragment
     EditText bpl;
     EditText w;
     Button addMed;
-    Button edMed;
+    Button analysis;
     FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private DatabaseReference phyID;
@@ -95,7 +95,7 @@ public class PatientCurrentFragment extends Fragment
         w = (EditText)v.findViewById(R.id.weightEdit);
         listView = (ExpandableListView)v.findViewById(R.id.medicationList);
         addMed = (Button) v.findViewById(R.id.addMed);
-        edMed = (Button)v.findViewById(R.id.edMed);
+        analysis = (Button)v.findViewById(R.id.edAnalysis);
 
 
 
@@ -214,9 +214,10 @@ public class PatientCurrentFragment extends Fragment
             }
         });
 
-        edMed.setOnClickListener(new View.OnClickListener() {
+        analysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
             }
         });

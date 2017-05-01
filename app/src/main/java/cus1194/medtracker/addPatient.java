@@ -80,6 +80,8 @@ public class addPatient extends AppCompatActivity {
         phyID = database.getReference(user.getUid()/* "hxIPBytiRDMpDfCz4VhPPCnUiEy1"*/);
         patientList = phyID.child("patientList");
 
+
+
         PatientInfo PatientInfo = new PatientInfo(PN, SS, MH);
 
         DatabaseReference patientRef = patientList.push();
