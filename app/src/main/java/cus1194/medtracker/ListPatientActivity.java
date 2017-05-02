@@ -9,6 +9,7 @@ import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -106,7 +107,13 @@ public class ListPatientActivity extends AppCompatActivity {
             }
         });
 
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ListPatientActivity.this, PatientMain.class);
+                startActivity(intent);
+            }
+        });
 
         addPat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +146,8 @@ public class ListPatientActivity extends AppCompatActivity {
             listView.setAdapter(adapter);
 
         }
+
+
 
 
 }

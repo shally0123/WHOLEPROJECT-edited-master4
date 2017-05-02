@@ -103,7 +103,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
         phyID = database.getReference(user.getUid());
+
         patientList = phyID.child("patientList");
+
+
 
         patientName = patientList.child("patientName");
         medInfoDatabase = patientName.child("medicationInfo");
