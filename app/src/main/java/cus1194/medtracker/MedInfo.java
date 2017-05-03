@@ -21,5 +21,15 @@ public class MedInfo
         this.MedID=MedID;
 
     }
+/*
+    public String getMedName()
+    {
+        return MedName;
+    }
 
+    public String getMedID()
+    {
+        return MedID;
+    }
+*/
 }

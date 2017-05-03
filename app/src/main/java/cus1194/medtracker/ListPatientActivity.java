@@ -42,8 +42,11 @@ public class ListPatientActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayList<PatientInfo> values;
+    ArrayList<String> patientInfoKeys;
     PatientInfo[] patientarray;
     String[] patientsString;
+    ArrayList<String> patientSSN;
+    ArrayList<String> hope;
 
 
     @Override
@@ -52,6 +55,8 @@ public class ListPatientActivity extends AppCompatActivity {
         setContentView(R.layout.patient_selection);
 
         values = new ArrayList<PatientInfo>();
+        patientSSN = new ArrayList<String>();
+        patientInfoKeys = new ArrayList<String>();
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,11 +94,12 @@ public class ListPatientActivity extends AppCompatActivity {
                 for (DataSnapshot patientData: children){
                     Log.d("KEY INFO", patientData.getKey().toString());
 
+                    patientInfoKeys.add(patientData.getKey().toString());
                     PatientInfo pinfo = patientData.getValue(PatientInfo.class);
                     values.add(pinfo);
 
-                }
 
+                }
 
                 addToArrayList();
 
@@ -110,7 +116,11 @@ public class ListPatientActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
                 Intent intent = new Intent(ListPatientActivity.this, PatientMain.class);
+                Log.d("Selected patient name:",values.get(position).getPName());
+                intent.putExtra("PATIENT_KEY",patientInfoKeys.get(position));
                 startActivity(intent);
             }
         });

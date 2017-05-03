@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +21,7 @@ public class PatientMain extends AppCompatActivity  {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PatientViewAdapt patientViewAdapt;
+    protected String selectedPatientKey;
 
 
     @Override
@@ -31,6 +30,15 @@ public class PatientMain extends AppCompatActivity  {
 
         super.onCreate(savedIntanceState);
         setContentView(R.layout.patient_main);
+
+        // Get String extra from previous intent
+        Intent intent = getIntent();
+        Bundle bd = intent.getExtras();
+        if(bd != null)
+        {
+            selectedPatientKey = (String) bd.get("PATIENT_KEY");
+            Log.d("Previous patient key:", selectedPatientKey);
+        }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String name = user.getDisplayName();
@@ -51,6 +59,9 @@ public class PatientMain extends AppCompatActivity  {
 
 
     };
+
+    // Retrieves list of patients and finds patient with given ssn.
+    // Then finds the patient key.
 
 
 }

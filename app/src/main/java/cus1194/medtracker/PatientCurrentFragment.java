@@ -5,32 +5,29 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import static cus1194.medtracker.ExpandableListHeaderInfo.getInfo;
 
 
 /**
@@ -39,10 +36,13 @@ import static cus1194.medtracker.ExpandableListHeaderInfo.getInfo;
 public class PatientCurrentFragment extends Fragment
 {
 
-    private ExpandableListView listView;
-    private ExpandableListAdapter listAdapter;
-    private List<String> medStatus;
-    private HashMap<String, List<String>> medications;
+    ListView listView;
+    ArrayAdapter<MedInfo> listAdapter;
+
+    ArrayList<MedInfo> meds;
+    MedInfo[] medarray;
+    String[] medString;
+    ArrayList<String> patientSSN;
 
     TextView lbListHeader;
     View v;
@@ -93,12 +93,12 @@ public class PatientCurrentFragment extends Fragment
         bph = (EditText) v.findViewById(R.id.bloodPressureHighEdit);
         bpl = (EditText) v.findViewById(R.id.bloodPressureLowEdit);
         w = (EditText)v.findViewById(R.id.weightEdit);
-        listView = (ExpandableListView)v.findViewById(R.id.medicationList);
+        listView = (ListView)v.findViewById(R.id.medicationList);
         addMed = (Button) v.findViewById(R.id.addMed);
         analysis = (Button)v.findViewById(R.id.edAnalysis);
 
 
-
+/*
         databaseReference = FirebaseDatabase.getInstance().getReference();
         //firebaseAuth = FirebaseAuth.getInstance();
         //FirebaseUser userN = firebaseAuth.getCurrentUser();
@@ -108,49 +108,42 @@ public class PatientCurrentFragment extends Fragment
         phyID = databaseReference.child(user.getUid());
         patientList = phyID.child("patientList");
         //String patientN=patientList.getKey();
-        patientName=patientList.child("patientName");
+        //patientName=patientList.child("patientName");
 
+*/
+
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        phyID = database.getReference(user.getUid());
+        patientList = phyID.child("patientList");
+
+        // get parent activity info
+        String  patientKey = ((PatientMain) getActivity()).selectedPatientKey;
+        Log.d("Fragment:",patientKey);
+
+        patientName = patientList.child(patientKey);
         vitalInfo = patientName.child("vitalInfo");
         medicationInfo = patientName.child("medicationInfo");
 
-/*
-        //medStatus = new ArrayList<String>();
-        //medStatus.add(lbListHeader.toString());
 
-        medicationInfo.addValueEventListener(new ValueEventListener() {
+
+        patientSSN = new ArrayList<String>();
+
+        //vitalInfo = patientName.child("vitalInfo");
+        //medicationInfo = patientName.child("medicationInfo");
+
+        patientList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                MedInfo medInfo = dataSnapshot.getValue(MedInfo.class);
-                lbListHeader.setText(medInfo.MedName);
 
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Query queryRef = medicationInfo.orderByKey().limitToFirst(medStatus.size());
-        queryRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String, String> value = (Map<String,String>)dataSnapshot.getValue();
-                medStatus.add(String.valueOf(value));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                for(DataSnapshot data: dataSnapshot.getChildren())
+                {
+                    patientSSN.add(String.valueOf(data.getValue(PatientInfo.class).getSSN()));
+                    Log.d("paitentSSN holds: ", data.getValue(PatientInfo.class).getSSN());
+                }
 
             }
 
@@ -161,48 +154,18 @@ public class PatientCurrentFragment extends Fragment
         });
 
 
-        vitalInfo.addChildEventListener(new ChildEventListener() {
+
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                VitalInfo vital = dataSnapshot.getValue(VitalInfo.class);
-
-                String h = bph.toString();
-                String l = bpl.toString();
-                String ww = w.toString();
-                String t = "today";
-
-                //VitalInfo vital = new VitalInfo(t,h,l,ww);
-
-                bph.setText(vital.bloodPHigh);
-                bpl.setText(vital.bloodPLow);
-                w.setText(vital.weight);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), MedCurrentInfo.class);
+                startActivity(intent);
             }
+        });
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-*/
-        medications = ExpandableListHeaderInfo.getInfo();
-        medStatus = new ArrayList<String>(medications.keySet());
-
-        listAdapter = new ExpandableListAdapter(getContext(), medStatus, medications);
-        listView.setAdapter(listAdapter);
 
         addMed.setOnClickListener(new View.OnClickListener()
         {
@@ -243,6 +206,27 @@ public class PatientCurrentFragment extends Fragment
         VitalInfo vital = new VitalInfo(timestamp, bloodPH, bloodPL, weight);
 
         patientName.child("vitalInfo").setValue(vital);
+
+    }
+
+    public void addToArrayList() {
+        for (int i = 0; i < meds.size(); i++) {
+            if (meds.get(i) != null)
+                Log.d("Value Size is", meds.size() + " ");
+        }
+
+        medarray = meds.toArray(new MedInfo[meds.size()]);
+        medString = new String [medarray.length];
+
+
+        for (int i = 0; i < medarray.length; i++) {
+            Log.d("PatientArray", medarray[i].MedName + " ");
+            medString[i] = medarray[i].MedName.toString();
+        }
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.fragment_current_listgroup, medString);
+        listView.setAdapter(adapter);
 
     }
 
