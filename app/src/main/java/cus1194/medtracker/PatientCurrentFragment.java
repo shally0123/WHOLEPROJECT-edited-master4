@@ -205,7 +205,9 @@ public class PatientCurrentFragment extends Fragment
 
         VitalInfo vital = new VitalInfo(timestamp, bloodPH, bloodPL, weight);
 
-        patientName.child("vitalInfo").setValue(vital);
+        patientName.child("vitalInfo");
+        DatabaseReference vitalRef = patientName.push();
+        vitalRef.setValue(vital);
 
     }
 
