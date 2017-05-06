@@ -10,14 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListPatientActivity"></activity>
 
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".MainActivity">
-
-
-        </activity>
-        <activity android:name=".addPatient">
+        <activity android:name=".LoginActivity">
 
 
             <intent-filter>
@@ -33,6 +27,9 @@
         <activity android:name=".AddMed"></activity>
         <activity android:name=".graph"></activity>
         <activity android:name=".MedCurrentInfo"></activity>
+        <activity android:name=".ListPatientActivity"></activity>
+        <activity android:name=".addPatient"></activity>
+        <activity android:name=".MainActivity"></activity>
 
 
 

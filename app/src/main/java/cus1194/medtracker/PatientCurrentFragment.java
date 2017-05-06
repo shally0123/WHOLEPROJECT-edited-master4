@@ -48,6 +48,7 @@ public class PatientCurrentFragment extends Fragment
     ArrayList<String> medInfoKeys;
 
     TextView lbListHeader;
+    TextView back;
     View v;
     EditText bph;
     EditText bpl;
@@ -59,14 +60,13 @@ public class PatientCurrentFragment extends Fragment
     private DatabaseReference phyID;
     private DatabaseReference patientList;
     private DatabaseReference patientName;
-    private DatabaseReference vitalInfo;
+    private DatabaseReference vitalList;
     private DatabaseReference medicationList;
     private DatabaseReference medicationInfo;
     private FirebaseAuth firebaseAuth;
     EditText addMedDos;
     EditText addMedId;
     Date date;
-
 
 
     public PatientCurrentFragment() {
@@ -98,10 +98,11 @@ public class PatientCurrentFragment extends Fragment
         listView = (ListView)v.findViewById(R.id.medicationList);
         addMed = (Button) v.findViewById(R.id.addMed);
         analysis = (Button)v.findViewById(R.id.edAnalysis);
+        back = (TextView)v.findViewById(R.id.back);
 
         date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
-        String stringDate = dt.format(date);
+        final String stringDate = dt.format(date);
 
         medInfoKeys = new ArrayList<String>();
         meds = new ArrayList<MedInfo>();
@@ -118,16 +119,51 @@ public class PatientCurrentFragment extends Fragment
         Log.d("Fragment:",patientKey);
 
         patientName = patientList.child(patientKey);
-        vitalInfo = patientName.child("vitalInfo");
+        vitalList = patientName.child("vitalList");
         medicationList = patientName.child("medicationList");
         medicationInfo = medicationList.push();
-        dates = medicationInfo.child(stringDate);
+        dates = vitalList.child(stringDate);
 
+        vitalList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                VitalInfo vitalz = dataSnapshot.child(stringDate).getValue(VitalInfo.class);
+
+                if(dataSnapshot.child(stringDate).getKey()==stringDate)
+                {
+
+                    bph.setText(vitalz.bloodPHigh);
+                    bpl.setText(vitalz.bloodPLow);
+                    w.setText(vitalz.weight);
+
+                }
+
+                Log.d("vitalList: " , stringDate+"");
+               /* for(DataSnapshot vitalData: dataSnapshot.getChildren())
+                {
+                    Log.d("date should be:", stringDate);
+                    Log.d("dataS.getChildren: ", dataSnapshot.child(stringDate).toString());
+                    if(vitalData.child(stringDate).getKey()==stringDate)
+                    {
+                        bph.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPHigh);
+                        bpl.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPLow);
+                        w.setText(vitalData.child(stringDate).getValue(VitalInfo.class).weight);
+                    }
+                }*/
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         medicationList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
 
                 Toast.makeText(getContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT);
                 Log.d("KEY INFO", dataSnapshot.getKey().toString());
@@ -153,6 +189,7 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
+
 
 
         //patientSSN = new ArrayList<String>();
@@ -193,7 +230,14 @@ public class PatientCurrentFragment extends Fragment
             }
         });
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveVitalInfo();
+                Intent intent = new Intent(PatientCurrentFragment.this.getActivity(), ListPatientActivity.class);
+                startActivity(intent);
+            }
+        });
 
         addMed.setOnClickListener(new View.OnClickListener()
         {
@@ -226,11 +270,11 @@ public class PatientCurrentFragment extends Fragment
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
         String stringDate = dt.format(date);
 
-        VitalInfo vital = new VitalInfo(stringDate,bloodPH, bloodPL, weight);
+        VitalInfo vital = new VitalInfo(bloodPH, bloodPL, weight);
 
-        vitalInfo = patientName.child("vitalInfo");
-        //DatabaseReference vitalRef = dates.push();
-        vitalInfo.setValue(vital);
+        vitalList = patientName.child("vitalList");
+        dates = vitalList.child(stringDate);
+        dates.setValue(vital);
 
     }
 

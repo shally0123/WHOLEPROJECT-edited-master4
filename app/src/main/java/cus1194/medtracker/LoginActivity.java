@@ -1,5 +1,6 @@
 package cus1194.medtracker;
 
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String uid = user.getUid();
                             Log.v("THe user id is:", uid);
                             Toast.makeText(LoginActivity.this, "Login SUCCESSFUL!!!!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),PatientMain.class));
+                            startActivity(new Intent(getApplicationContext(),ListPatientActivity.class));
 
                         }
                         else

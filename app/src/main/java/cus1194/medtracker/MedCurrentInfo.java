@@ -42,9 +42,11 @@ public class MedCurrentInfo extends AppCompatActivity
     TextView edMedName;
     TextView edMedID;
     EditText edNurseName;
-    CheckBox given;
+    CheckBox givenOrNotGiven;
+    boolean check;
     Button save;
     Button cancel;
+    NursePhyInfo np;
 
     Date date;
 
@@ -52,7 +54,7 @@ public class MedCurrentInfo extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expanded_info);
 
@@ -60,9 +62,13 @@ public class MedCurrentInfo extends AppCompatActivity
         edMedName = (TextView) findViewById(R.id.editView1);
         edMedID = (TextView) findViewById(R.id.editView2);
         edNurseName = (EditText) findViewById(R.id.editView3);
-        given = (CheckBox) findViewById(R.id.given);
+        givenOrNotGiven = (CheckBox) findViewById(R.id.given);
         save=(Button)findViewById(R.id.saveInfo);
         cancel=(Button)findViewById(R.id.cancelInfo);
+
+        check = false;
+        np = new NursePhyInfo();
+        np.given = false;
 
         date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
@@ -113,15 +119,37 @@ public class MedCurrentInfo extends AppCompatActivity
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                savedNurseGivenInfo();
+                startActivity(new Intent(MedCurrentInfo.this, PatientMain.class));
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MedCurrentInfo.this, PatientMain.class));
             }
         });
+
+    }
+
+    public void savedNurseGivenInfo()
+    {
+        String nurseName = edNurseName.getText().toString().trim();
+        check = np.given;
+
+
+        if(givenOrNotGiven.isChecked())
+        {
+            check=true;
+        }
+        else
+        {
+            check=false;
+        }
+
+        NursePhyInfo nursePhyInfo = new NursePhyInfo(nurseName,check);
+
+        dates.setValue(nursePhyInfo);
 
     }
 
