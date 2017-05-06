@@ -22,7 +22,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="40dp"
         android:inputType="numberDecimal"
-        android:hint="Blood Pressure"
+        android:hint="Please enter SBP"
         android:id="@+id/bloodPressureHighEdit" />
 
     <EditText
@@ -31,7 +31,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="80dp"
         android:inputType="numberDecimal"
-        android:hint="Blood Pressure"
+        android:hint="Please enter DBP"
         android:id="@+id/bloodPressureLowEdit" />
 
     <EditText
@@ -40,7 +40,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="120dp"
         android:inputType="numberDecimal"
-        android:hint="Weight"
+        android:hint="Please enter Weight in Pounds"
         android:id="@+id/weightEdit"
         />
 

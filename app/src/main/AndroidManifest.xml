@@ -32,6 +32,7 @@
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".AddMed"></activity>
         <activity android:name=".graph"></activity>
+        <activity android:name=".MedCurrentInfo"></activity>
 
 
 

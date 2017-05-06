@@ -7,18 +7,22 @@ package cus1194.medtracker;
 public class NursePhyInfo
 {
 
-    public String Name;
-    public boolean Given;
+    public String name;
+    public String medName;
+    public String medID;
+    public boolean given;
 
     public NursePhyInfo (){
         //nothing to put here for blank constructor
     }
 
-    public NursePhyInfo(String Name, boolean Status)
+    public NursePhyInfo(String name, String medName, String medID, boolean status)
     {
 
-        this.Name=Name;
-        this.Given=Status;
+        this.name=name;
+        this.medName = medName;
+        this.medID = medID;
+        this.given=status;
 
     }
 

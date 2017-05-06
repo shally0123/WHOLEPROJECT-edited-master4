@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="ssn" />
+        android:text="SSN" />
 
     <EditText
         android:id="@+id/MedHis"

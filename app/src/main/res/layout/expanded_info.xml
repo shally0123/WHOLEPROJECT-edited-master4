@@ -3,21 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="match_parent"
     android:weightSum="1">
 
     <CheckBox
         android:id="@+id/given"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="59dp"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="32dp"
         android:text="Given"
-        android:layout_above="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="95dp" />
+        android:layout_below="@+id/editView3"
+        android:layout_toRightOf="@+id/textView3"
+        android:layout_toEndOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView1"
@@ -55,50 +52,52 @@
         android:text="Nurse:"
         android:textSize="14dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editView1"
-        android:textSize="14dp"
+        android:textSize="18dp"
         android:text="Med name"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="12dp"
         android:layout_marginLeft="140dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editView2"
-        android:textSize="14dp"
+        android:textSize="18dp"
         android:text="Med code"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="155dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editView3"
-        android:textSize="14dp"
+        android:textSize="18dp"
         android:text="Nurse name"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="70dp" />
+        android:layout_marginTop="87dp"
+        android:layout_toRightOf="@+id/textView3" />
 
     <Button
         android:layout_width="170dp"
         android:layout_height="70dp"
         android:text="Save Info"
         android:id="@+id/saveInfo"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/given"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="77dp" />
 
     <Button
         android:layout_width="170dp"
         android:layout_height="70dp"
         android:text="cancel"
         android:id="@+id/cancelInfo"
-        android:layout_below="@+id/given"
+        android:layout_below="@+id/saveInfo"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
 
 
 </RelativeLayout>

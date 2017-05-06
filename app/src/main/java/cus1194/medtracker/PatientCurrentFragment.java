@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -42,7 +45,7 @@ public class PatientCurrentFragment extends Fragment
     ArrayList<MedInfo> meds;
     MedInfo[] medarray;
     String[] medString;
-    ArrayList<String> patientSSN;
+    ArrayList<String> medInfoKeys;
 
     TextView lbListHeader;
     View v;
@@ -52,19 +55,18 @@ public class PatientCurrentFragment extends Fragment
     Button addMed;
     Button analysis;
     FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private DatabaseReference dates;
     private DatabaseReference phyID;
     private DatabaseReference patientList;
     private DatabaseReference patientName;
     private DatabaseReference vitalInfo;
+    private DatabaseReference medicationList;
     private DatabaseReference medicationInfo;
     private FirebaseAuth firebaseAuth;
     EditText addMedDos;
     EditText addMedId;
-    Calendar c = Calendar.getInstance();
-    int year = c.get(Calendar.YEAR);
-    int month = c.get(Calendar.MONTH);
-    int day = c.get(Calendar.DAY_OF_MONTH);
+    Date date;
+
 
 
     public PatientCurrentFragment() {
@@ -97,20 +99,12 @@ public class PatientCurrentFragment extends Fragment
         addMed = (Button) v.findViewById(R.id.addMed);
         analysis = (Button)v.findViewById(R.id.edAnalysis);
 
+        date = new Date();
+        SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
+        String stringDate = dt.format(date);
 
-/*
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        //firebaseAuth = FirebaseAuth.getInstance();
-        //FirebaseUser userN = firebaseAuth.getCurrentUser();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        phyID = databaseReference.child(user.getUid());
-        patientList = phyID.child("patientList");
-        //String patientN=patientList.getKey();
-        //patientName=patientList.child("patientName");
-
-*/
+        medInfoKeys = new ArrayList<String>();
+        meds = new ArrayList<MedInfo>();
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -125,15 +119,45 @@ public class PatientCurrentFragment extends Fragment
 
         patientName = patientList.child(patientKey);
         vitalInfo = patientName.child("vitalInfo");
-        medicationInfo = patientName.child("medicationInfo");
+        medicationList = patientName.child("medicationList");
+        medicationInfo = medicationList.push();
+        dates = medicationInfo.child(stringDate);
 
 
 
-        patientSSN = new ArrayList<String>();
+        medicationList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        //vitalInfo = patientName.child("vitalInfo");
-        //medicationInfo = patientName.child("medicationInfo");
+                Toast.makeText(getContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT);
+                Log.d("KEY INFO", dataSnapshot.getKey().toString());
 
+
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot patientData: children){
+                    Log.d("KEY INFO", patientData.getKey().toString());
+
+                    medInfoKeys.add(patientData.getKey().toString());
+                    MedInfo medInfo = patientData.getValue(MedInfo.class);
+                    meds.add(medInfo);
+
+
+                }
+
+                addToArrayList();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //patientSSN = new ArrayList<String>();
+
+/*
         patientList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,6 +169,8 @@ public class PatientCurrentFragment extends Fragment
                     Log.d("paitentSSN holds: ", data.getValue(PatientInfo.class).getSSN());
                 }
 
+
+
             }
 
             @Override
@@ -152,7 +178,7 @@ public class PatientCurrentFragment extends Fragment
 
             }
         });
-
+*/
 
 
 
@@ -160,7 +186,9 @@ public class PatientCurrentFragment extends Fragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), MedCurrentInfo.class);
+                Intent intent = new Intent(PatientCurrentFragment.this.getActivity(), MedCurrentInfo.class);
+                Log.d("Selected med name:",meds.get(position).MedName.toString());
+                intent.putExtra("MEDICATION_KEY",medInfoKeys.get(position));
                 startActivity(intent);
             }
         });
@@ -194,24 +222,20 @@ public class PatientCurrentFragment extends Fragment
         String bloodPL = bpl.getText().toString().trim();
         String weight = w.getText().toString().trim();
 
+        date = new Date();
+        SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
+        String stringDate = dt.format(date);
 
-        CalendarSettings cs = new CalendarSettings(getActivity());
-        DatePickerDialog dialog;
+        VitalInfo vital = new VitalInfo(stringDate,bloodPH, bloodPL, weight);
 
-        dialog = new DatePickerDialog(getActivity(), cs, year, month, day);
-        Random ran = new Random();
-
-        String timestamp = dialog.toString() +ran.nextInt(1000);
-
-        VitalInfo vital = new VitalInfo(timestamp, bloodPH, bloodPL, weight);
-
-        patientName.child("vitalInfo");
-        DatabaseReference vitalRef = patientName.push();
-        vitalRef.setValue(vital);
+        vitalInfo = patientName.child("vitalInfo");
+        //DatabaseReference vitalRef = dates.push();
+        vitalInfo.setValue(vital);
 
     }
 
     public void addToArrayList() {
+
         for (int i = 0; i < meds.size(); i++) {
             if (meds.get(i) != null)
                 Log.d("Value Size is", meds.size() + " ");

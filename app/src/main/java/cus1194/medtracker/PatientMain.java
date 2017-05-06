@@ -21,7 +21,7 @@ public class PatientMain extends AppCompatActivity  {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PatientViewAdapt patientViewAdapt;
-    protected String selectedPatientKey;
+    protected static String selectedPatientKey;
 
 
     @Override

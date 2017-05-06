@@ -3,6 +3,7 @@ package cus1194.medtracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by pruan086 on 4/4/2017.
@@ -27,11 +31,14 @@ public class AddMed extends AppCompatActivity
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     private DatabaseReference phyID;
     private DatabaseReference patientList;
     private DatabaseReference patientName;
+    private DatabaseReference medicationList;
+    private DatabaseReference medicationInfo;
 
+    Date date;
+    protected static String selectedMedKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,11 +47,26 @@ public class AddMed extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_med);
 
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //databaseReference = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        phyID = database.getReference(user.getUid());
+        patientList = phyID.child("patientList");
+
+        // get parent activity info
+        String  patientKey = PatientMain.selectedPatientKey;
+        Log.d("Fragment:",patientKey);
+
+        patientName = patientList.child(patientKey);
+
+        Intent intent = getIntent();
+        Bundle bd = intent.getExtras();
+        if(bd != null)
+        {
+            selectedMedKey = (String) bd.get("MEDICATION_KEY");
+            Log.d("Previous med key:", selectedMedKey);
+        }
 
         addMedDos = (EditText)findViewById(R.id.addMedDos);
         addMedID = (EditText)findViewById(R.id.addMedID);
@@ -77,17 +99,22 @@ public class AddMed extends AppCompatActivity
         String name = addMedDos.getText().toString().trim();
         String id = addMedID.getText().toString().trim();
 
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getInstance().getReference();
-        //firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        phyID = databaseReference.child(user.getUid());
+        // get parent activity info
+        String  patientKey = PatientMain.selectedPatientKey;
+        Log.d("Fragment:",patientKey);
+
+        patientName = patientList.child(patientKey);
+
+        phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
-        patientName = patientList.child("patientName");
+        medicationList = patientName.child("medicationList");
+        medicationInfo = medicationList.push();
 
         MedInfo MedInfo = new MedInfo(name, id);
-        patientName.child("medicationInfo").setValue(MedInfo);
+        medicationInfo.setValue(MedInfo);
 
     }
 

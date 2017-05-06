@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by liu on 5/2/17.
@@ -25,19 +28,27 @@ import java.util.ArrayList;
 
 public class MedCurrentInfo extends AppCompatActivity
 {
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
-    private DatabaseReference patientList;
+    FirebaseDatabase database;
+    private DatabaseReference dates;
     private DatabaseReference phyID;
+    private DatabaseReference patientList;
+    private DatabaseReference patientName;
+    private DatabaseReference medicationList;
+    private DatabaseReference medicationInfo;
+    private FirebaseAuth firebaseAuth;
 
     ArrayList<String> patientSSN;
 
-    EditText edMedName;
-    EditText edMedID;
+    TextView edMedName;
+    TextView edMedID;
     EditText edNurseName;
     CheckBox given;
     Button save;
     Button cancel;
+
+    Date date;
+
+    protected String selectedMedKey;
 
 
     @Override
@@ -46,40 +57,49 @@ public class MedCurrentInfo extends AppCompatActivity
         setContentView(R.layout.expanded_info);
 
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        //FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        //firebaseAuth = FirebaseAuth.getInstance();
-        //FirebaseUser userN = firebaseAuth.getCurrentUser();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        phyID = databaseReference.child(user.getUid());
-        patientList = phyID.child("patientList");
-
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        edMedName = (EditText) findViewById(R.id.editView1);
-        edMedID = (EditText) findViewById(R.id.editView2);
+        edMedName = (TextView) findViewById(R.id.editView1);
+        edMedID = (TextView) findViewById(R.id.editView2);
         edNurseName = (EditText) findViewById(R.id.editView3);
         given = (CheckBox) findViewById(R.id.given);
         save=(Button)findViewById(R.id.saveInfo);
         cancel=(Button)findViewById(R.id.cancelInfo);
 
-        patientList.addListenerForSingleValueEvent(new ValueEventListener() {
+        date = new Date();
+        SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
+        String stringDate = dt.format(date);
+
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        phyID = database.getReference(user.getUid());
+        patientList = phyID.child("patientList");
+
+        Intent intent = getIntent();
+        Bundle bd = intent.getExtras();
+        if(bd != null)
+        {
+            selectedMedKey = (String) bd.get("MEDICATION_KEY");
+            Log.d("Previous med key:", selectedMedKey + " ");
+        }
+
+        // get parent activity info
+        String  patientKey = PatientMain.selectedPatientKey;
+        Log.d("Fragment:",patientKey);
+        //String medKey = PatientCurrentFragment.selectedMedKey;
+        //String medKey = ((AddMed) getActivity()).selectedMedKey;
+
+        patientName = patientList.child(patientKey);
+        medicationList = patientName.child("medicationList");
+        medicationInfo = medicationList.child(selectedMedKey);
+        dates = medicationInfo.child(stringDate);
+
+        medicationInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                patientSSN = new ArrayList<String>();
-
-                for(DataSnapshot data: dataSnapshot.getChildren())
-                {
-                    patientSSN.add(String.valueOf(data.getValue(PatientInfo.class).getSSN()));
-                    Log.d("patientSSN holds: ", patientSSN.get(patientSSN.size()));
-                }
-
+                MedInfo medInfo = dataSnapshot.getValue(MedInfo.class);
+                edMedName.setText(medInfo.MedName);
+                edMedID.setText(medInfo.MedID);
             }
 
             @Override

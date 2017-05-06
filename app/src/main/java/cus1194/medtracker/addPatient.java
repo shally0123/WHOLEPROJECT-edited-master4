@@ -89,32 +89,7 @@ public class addPatient extends AppCompatActivity {
         //String patient = patientRef.getKey();
 
     }
-    /*
-private void retrievePatientInfo(){
-    FirebaseUser user = firebaseAuth.getCurrentUser();
-    // Get a reference to our posts
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference(user.getUid()).child("patientInfo");
 
-    // Attach a listener to read the data at our posts reference
-    ref.addValueEventListener(new ValueEventListener() {
-
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            PatientInfo patientinfo = dataSnapshot.getValue(PatientInfo.class);
-            PatientName.setText(patientinfo.PName);
-            SSN.setText(patientinfo.SSN);
-            MedicalHistory.setText(patientinfo.MedHis);
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            System.out.println("The read failed: " + databaseError.getCode());
-        }
-    });
-}//retrieve informaiton from google firebase
-*/
 }
 
 
