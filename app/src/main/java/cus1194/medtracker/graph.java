@@ -21,10 +21,12 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by liu on 4/11/17.
@@ -48,6 +50,7 @@ public class graph extends AppCompatActivity {
     public String weight;
     Date date;
 
+    LineGraphSeries<DataPoint> series_one;
 
 @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class graph extends AppCompatActivity {
 //set child
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
 
@@ -81,32 +84,56 @@ public class graph extends AppCompatActivity {
         //VitalInfo vitalz = dataSnapshot.child(stringDate).getValue(VitalInfo.class);
         //dates.setValue(vital);
 
+
+        final ArrayList<String> datez = new ArrayList<String>();
+        final ArrayList<Integer> ww=new ArrayList<>();
+
+        series_one = new LineGraphSeries<>();
+
+
         DatabaseReference graph_reference= FirebaseDatabase.getInstance().getReference(user.getUid()).
-                child("patientList").child(patientKey).child("vitalList").child(stringDate);
+                child("patientList").child(patientKey).child("vitalList");
         graph_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //weight
+                //dates.setValue(ww);
+/*
+                for(DataSnapshot data: dataSnapshot.getChildren())
+                {
+                    VitalInfo vt = data.getValue(VitalInfo.class);
+                    ww.add(vt.weight);
+                }*/
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
                 GraphView graph_weight = (GraphView) findViewById(R.id.graph_one);
+                for (DataSnapshot data : children) {
 
-                weight = dataSnapshot.child(stringDate).getValue(VitalInfo.class).toString();
-                ArrayList<String>weight=new ArrayList<>();
-                dates.setValue(weight);
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                        //new DataPoint(0,100),
-                        //new DataPoint(1,30),
-                        //new DataPoint(2,60)//HOW TO LINKED WITH input DATA?
+                    VitalInfo vt = data.getValue(VitalInfo.class);
+                    ww.add(vt.weight);
+                    datez.add(data.getKey().toString());
 
-                        ; for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    VitalInfo weight_1 = dataSnapshot1.getValue(VitalInfo.class);
-                    weight.add(weight_1.weight);
+                    Log.d("children:", children.toString());
+                    Log.d("data:", data.toString());
+
+                    //Integer dt = Integer.parseInt(dataSnapshot.getChildren().toString());
+
+                    series_one = new LineGraphSeries<>(new DataPoint[]{
+                            new DataPoint(0, 60)
+
+                        //new DataPoint(ww.indexOf(children), datez.indexOf(data))
+                    });
+
+
                 }
-                //weight.add(graph_weight);
 
-                }
-                graph_weight.addSeries(series);
-                series.setDrawDataPoints(true);
-                series.setDataPointsRadius(10);
+
+
+                //weight = dataSnapshot.getValue(VitalInfo.class).weight.toString();
+
+
+                graph_weight.addSeries(series_one);
+                series_one.setDrawDataPoints(true);
+                series_one.setDataPointsRadius(10);
 
 
 

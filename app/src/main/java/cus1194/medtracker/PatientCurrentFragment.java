@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-
+import java.util.concurrent.RunnableFuture;
 
 
 /**
@@ -128,31 +128,57 @@ public class PatientCurrentFragment extends Fragment
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                VitalInfo vitalz = dataSnapshot.child(stringDate).getValue(VitalInfo.class);
 
-                if(dataSnapshot.child(stringDate).getKey()==stringDate)
-                {
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
 
-                    bph.setText(vitalz.bloodPHigh);
-                    bpl.setText(vitalz.bloodPLow);
-                    w.setText(vitalz.weight);
+                for (DataSnapshot child: children){
+
+                    if(child.getKey().equals(stringDate)){
+                        Log.d("db retrieve","We have a date!");
+                        VitalInfo vitalz = child.getValue(VitalInfo.class);
+                        Log.d("db retrieve", vitalz.bloodPLow+" blah");
+                        bph.setText(vitalz.bloodPHigh+"");
+                        bpl.setText(vitalz.bloodPLow + "");
+                        w.setText(vitalz.weight + "");
+                    }
 
                 }
+                /*
+                Log.d("vitalz.bloodPHigh: ", vitalz.bloodPHigh.toString());
+                Log.d("vitalz.bloodPLow: ", vitalz.bloodPLow.toString());
+                Log.d("vitalz.weight: ", vitalz.weight.toString());
+                */
 
-                Log.d("vitalList: " , stringDate+"");
-               /* for(DataSnapshot vitalData: dataSnapshot.getChildren())
-                {
-                    Log.d("date should be:", stringDate);
-                    Log.d("dataS.getChildren: ", dataSnapshot.child(stringDate).toString());
-                    if(vitalData.child(stringDate).getKey()==stringDate)
+//                if (vitalz != null) {
+//                    Log.d("VitalInfo:", "Key:"+dataSnapshot.child(stringDate).getKey()+"| stringDate:"+stringDate);
+//                    if (dataSnapshot.child(stringDate).getKey().toString().equals(stringDate)) {
+//
+////                        Log.d("Date contains: ", dataSnapshot.child(stringDate).getValue().toString());
+//
+//
+//                        bph.setText(vitalz.bloodPHigh+"");
+//                        bpl.setText(vitalz.bloodPLow + "");
+//                        w.setText(vitalz.weight + "");
+//                    }
+//                    else
+//                    {}
+
+
+                    Log.d("vitalList: ", stringDate + "");
+                   /* for(DataSnapshot vitalData: dataSnapshot.getChildren())
                     {
-                        bph.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPHigh);
-                        bpl.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPLow);
-                        w.setText(vitalData.child(stringDate).getValue(VitalInfo.class).weight);
-                    }
-                }*/
+                        Log.d("date should be:", stringDate);
+                        Log.d("dataS.getChildren: ", dataSnapshot.child(stringDate).toString());
+                        if(vitalData.child(stringDate).getKey()==stringDate)
+                        {
+                            bph.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPHigh);
+                            bpl.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPLow);
+                            w.setText(vitalData.child(stringDate).getValue(VitalInfo.class).weight);
+                        }
+                    }*/
+                }
 
-            }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -252,7 +278,7 @@ public class PatientCurrentFragment extends Fragment
         analysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(PatientCurrentFragment.this.getContext(), graph.class));
 
             }
         });
@@ -266,11 +292,17 @@ public class PatientCurrentFragment extends Fragment
         String bloodPL = bpl.getText().toString().trim();
         String weight = w.getText().toString().trim();
 
+        Log.d("bloodPH: ", bloodPH);
+        int bh = Integer.parseInt(bloodPH);
+        int bl = Integer.parseInt(bloodPL);
+        int www = Integer.parseInt(weight);
+
+
         date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
         String stringDate = dt.format(date);
 
-        VitalInfo vital = new VitalInfo(bloodPH, bloodPL, weight);
+        VitalInfo vital = new VitalInfo(bh, bl, www);
 
         vitalList = patientName.child("vitalList");
         dates = vitalList.child(stringDate);

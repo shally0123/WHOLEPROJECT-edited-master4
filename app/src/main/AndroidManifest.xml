@@ -14,11 +14,7 @@
         <activity android:name=".LoginActivity">
 
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
             <activity android:name=".PatientMain">
@@ -27,7 +23,13 @@
         <activity android:name=".AddMed"></activity>
         <activity android:name=".graph"></activity>
         <activity android:name=".MedCurrentInfo"></activity>
-        <activity android:name=".ListPatientActivity"></activity>
+        <activity android:name=".ListPatientActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".addPatient"></activity>
         <activity android:name=".MainActivity"></activity>
 

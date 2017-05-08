@@ -7,15 +7,15 @@ package cus1194.medtracker;
 public class VitalInfo
 {
 
-    public String bloodPHigh;
-    public String bloodPLow;
-    public String weight;
+    public int bloodPHigh;
+    public int bloodPLow;
+    public int weight;
 
     public VitalInfo (){
         //nothing to put here for blank constructor
     }
 
-    public VitalInfo(String BloodPHigh, String BloodPLow, String Weight)
+    public VitalInfo( int BloodPHigh, int BloodPLow, int Weight)
     {
 
         this.bloodPHigh =BloodPHigh;
