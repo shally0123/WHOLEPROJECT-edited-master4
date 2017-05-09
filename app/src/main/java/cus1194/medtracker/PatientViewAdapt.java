@@ -42,10 +42,8 @@ public class PatientViewAdapt extends FragmentPagerAdapter
         return fragments.size();
     }
 
-    public CharSequence getTabTitles (int position)
-    {
+    @Override
+    public CharSequence getPageTitle(int position) {
         return tabTitles.get(position);
     }
-
-
 }

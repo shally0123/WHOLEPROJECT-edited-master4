@@ -55,7 +55,15 @@ public class PatientMain extends AppCompatActivity  {
         patientViewAdapt.addFragments(new PatientCurrentFragment(), "CURRENT");
         patientViewAdapt.addFragments(new PatientCalendarFragment(), "CALENDAR");
         viewPager.setAdapter(patientViewAdapt);
-        tabLayout.setupWithViewPager(viewPager);
+
+
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        });
+        //tabLayout.setupWithViewPager(viewPager);
 
 
     };
