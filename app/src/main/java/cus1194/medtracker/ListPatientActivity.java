@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ import java.util.List;
 public class ListPatientActivity extends AppCompatActivity {
 
     Button addPat;
+    TextView textview_2;
     FirebaseDatabase database;
 //    private DatabaseReference databaseReference;
     private DatabaseReference phyID;
@@ -62,27 +64,23 @@ public class ListPatientActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        phyID = database.getReference( user.getUid()/*"hxIPBytiRDMpDfCz4VhPPCnUiEy1"*/);
+        phyID = database.getReference( user.getUid());
         patientList = phyID.child("patientList");
-        //patientName = patientList.child("patientName");
-        //patientInfo = patientList.child("patientInfo");
-
 
 
 
         addPat = (Button)findViewById(R.id.PatientSelection);
-      //  b_analysis=(Button)findViewById(R.id.analysis);
 
-      //  b_analysis.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-       //     public void onClick(View v) {
-       //         Intent intent = new Intent(ListPatientActivity.this, graph.class);
-      //          startActivity(intent);
-       //     }
-      //  });
 
         listView = (ListView)findViewById(R.id.patientList);
 
+        textview_2 = (TextView)findViewById(R.id.logout_view);
+        textview_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ListPatientActivity.this, LoginActivity.class));
+            }
+        });
         patientList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -84,29 +84,29 @@
         android:layout_height="70dp"
         android:text="Save Info"
         android:id="@+id/saveInfo"
-        android:layout_alignTop="@+id/given"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/given"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="77dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="170dp"
         android:layout_height="70dp"
         android:text="cancel"
         android:id="@+id/cancelInfo"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/saveInfo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="180dp"
         android:layout_height="50dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginLeft="205dp"
         android:text="Analysis"
         android:id="@+id/edAnalysis"
-        />
+        android:layout_alignTop="@+id/saveInfo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/cancelInfo" />
 
 
 </RelativeLayout>
