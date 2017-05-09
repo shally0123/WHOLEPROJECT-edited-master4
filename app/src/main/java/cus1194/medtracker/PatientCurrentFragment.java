@@ -275,13 +275,7 @@ public class PatientCurrentFragment extends Fragment
             }
         });
 
-        analysis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PatientCurrentFragment.this.getContext(), graph.class));
 
-            }
-        });
 
 
     }
@@ -307,6 +301,8 @@ public class PatientCurrentFragment extends Fragment
         vitalList = patientName.child("vitalList");
         dates = vitalList.child(stringDate);
         dates.setValue(vital);
+
+
 
     }
 

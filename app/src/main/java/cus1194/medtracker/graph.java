@@ -1,5 +1,6 @@
 package cus1194.medtracker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,16 +54,29 @@ public class graph extends AppCompatActivity {
     public String weight;
     Date date;
 
+    protected String selectedMedKey;
+
     LineGraphSeries<DataPoint> series_one;
     LineGraphSeries<DataPoint> series_two;
     LineGraphSeries<DataPoint> series_three;
     LineGraphSeries<DataPoint> series_four;
+
+    TextView textview;
 
 
 @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph);
+
+    textview = (TextView)findViewById(R.id.graph_back);
+
+    textview.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(graph.this, PatientMain.class));
+        }
+    });
        // ArrayList<String>weight=new ArrayList<>();
     //ArrayList<String>sbp=new ArrayList<>();
     //ArrayList<String>hbp=new ArrayList<>();
@@ -75,6 +91,10 @@ public class graph extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
+
+
+
+        String medicationKey = MedCurrentInfo.selectedMedKey;
 
         String  patientKey = PatientMain.selectedPatientKey;
         Log.d("Fragment:",patientKey);
@@ -98,6 +118,7 @@ public class graph extends AppCompatActivity {
         final ArrayList<Integer> dd = new ArrayList<>();
         final ArrayList<Integer> MedDate = new ArrayList<>();
         final ArrayList<Boolean> mm = new ArrayList<>();
+        final ArrayList<Integer> TF = new ArrayList<>();
 
 //weight
         series_one = new LineGraphSeries<>();
@@ -107,6 +128,9 @@ public class graph extends AppCompatActivity {
 
         DatabaseReference graph_reference= FirebaseDatabase.getInstance().getReference(user.getUid()).
                 child("patientList").child(patientKey).child("vitalList");
+
+        DatabaseReference medlist_reference = FirebaseDatabase.getInstance().getReference(user.getUid())
+                .child("patientList").child(patientKey).child("medicationList").child(medicationKey).child("medDates");
 
         graph_reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -124,7 +148,6 @@ public class graph extends AppCompatActivity {
                 GraphView graph_weight = (GraphView) findViewById(R.id.graph_one); //weight
                 GraphView graph_sbp = (GraphView) findViewById(R.id.graph_two); // SBP
                 GraphView graph_dbp = (GraphView) findViewById(R.id.graph_three); //DBP
-                GraphView graph_analysis = (GraphView) findViewById(R.id.graph_four); //medications yes/no
 
 
                 for (DataSnapshot data : children) {
@@ -404,51 +427,6 @@ public class graph extends AppCompatActivity {
 
 
 
-//DBP
-/*
-
-                LineGraphSeries<DataPoint> series_two = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(0, 60),
-                        new DataPoint(1, 74),
-                        new DataPoint(2, 80),
-                        new DataPoint(3, 90)//HOW TO LINKED WITH input DATA?
-                });
-                graph_dbp.addSeries(series_two);
-                series_two.setTitle("DBP");
-                series_two.setDrawDataPoints(true);
-                series_two.setDataPointsRadius(10);
-                series_two.setColor(Color.RED);
-
-//SBP
-                GraphView graph_sbp = (GraphView) findViewById(R.id.graph_two);
-                LineGraphSeries<DataPoint> series_three = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(0, 90),
-                        new DataPoint(1, 120),
-                        new DataPoint(2, 200),
-                        new DataPoint(3, 180)//HOW TO LINKED WITH input DATA?
-                });
-                graph_sbp.addSeries(series_three);
-                series_three.setTitle("SBP");
-                series_three.setColor(Color.BLUE);
-                series_three.setDrawDataPoints(true);
-                series_three.setDataPointsRadius(10);
-
-*/
-                //medtracker
-                LineGraphSeries<DataPoint> series_four = new LineGraphSeries<>(new DataPoint[]{
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 0),
-                        new DataPoint(2, 0)//HOW TO LINKED WITH input DATA?
-                        //new DataPoint(m1.getTime(),m1.getWei)
-                });
-                //graph_tracker.addSeries(series_four);
-                series_four.setDrawDataPoints(true);
-                series_four.setDataPointsRadius(10);
-
-                //Analysis
-                //avg=graph_dbp.getGraphContentTop()+graph_sbp.getGraphContentTop();
-
-
 //weight
                 graph_weight.getViewport().setXAxisBoundsManual(true);
                 graph_weight.getViewport().setMinX(0);
@@ -498,21 +476,6 @@ public class graph extends AppCompatActivity {
                 //staticLabelsFormatter_two.setVerticalLabels(new String[]{"NO", "YES"});
                 graph_sbp.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter_two);
 
-                //analysis
-                graph_analysis.getViewport().setXAxisBoundsManual(true);
-                graph_analysis.getViewport().setMinX(0);
-                graph_analysis.getViewport().setMaxX(4);
-
-                graph_analysis.getViewport().setYAxisBoundsManual(true);
-                graph_analysis.getViewport().setMinY(0);
-                graph_analysis.getViewport().setMaxY(1);//modify range later
-
-                graph_analysis.getViewport().setScrollable(true);
-
-                StaticLabelsFormatter staticLabelsFormatter_three = new StaticLabelsFormatter(graph_analysis);
-                staticLabelsFormatter_three.setHorizontalLabels(new String[]{"D1", "D2", "D3", "D4", "D5"});
-                staticLabelsFormatter_three.setVerticalLabels(new String[]{"NO", "YES"});
-                graph_analysis.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter_three);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -520,7 +483,137 @@ public class graph extends AppCompatActivity {
             }
         });
 
+        medlist_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
+
+                GraphView graph_med = (GraphView) findViewById(R.id.graph_four);
+
+                for (DataSnapshot data : children) {
+
+                    Log.d("data.getV: ", data.getValue().toString());
+
+                    NursePhyInfo np = data.getValue(NursePhyInfo.class);
+
+                    mm.add(np.given);
+                    MedDate.add(mm.size() -1);
+
+                    series_four = new LineGraphSeries<>(new DataPoint[]{});
+
+                    for(int i = 0; i <= mm.size(); i++)
+                    {
+                        //Log.d("mm hold: ", mm.get(i).toString());
+
+                       // if(mm.get(i)==true)
+                    //    {
+                            TF.add(1);
+                    //    }
+                    //    else
+                   //     {
+                    //        TF.add(0);
+                    //    }
+                    }
+
+                    if(mm.size()==1) {
+
+                        //Log.d("TF", TF.get(1).toString());
+
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+
+                                //new DataPoint(0,1),
+                                new DataPoint(MedDate.get(0), TF.get(0))
+
+                        });
+                    }
+
+                    if(mm.size()==2) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1))
+                        });
+                    }
+
+                    if(mm.size()==3) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1)),
+                                new DataPoint(MedDate.get(2), TF.get(2))
+                        });
+                    }
+
+                    if(mm.size()==4) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1)),
+                                new DataPoint(MedDate.get(2), TF.get(2)),
+                                new DataPoint(MedDate.get(3), TF.get(3))
+                        });
+                    }
+
+                    if(mm.size()==5) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1)),
+                                new DataPoint(MedDate.get(2), TF.get(2)),
+                                new DataPoint(MedDate.get(3), TF.get(3)),
+                                new DataPoint(MedDate.get(4), TF.get(4))
+                        });
+                    }
+
+                    if(mm.size()==6) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1)),
+                                new DataPoint(MedDate.get(2), TF.get(2)),
+                                new DataPoint(MedDate.get(3), TF.get(3)),
+                                new DataPoint(MedDate.get(4), TF.get(4)),
+                                new DataPoint(MedDate.get(5), TF.get(5))
+                        });
+                    }
+
+                    if(mm.size()==7) {
+                        series_four = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(MedDate.get(0), TF.get(0)),
+                                new DataPoint(MedDate.get(1), TF.get(1)),
+                                new DataPoint(MedDate.get(2), TF.get(2)),
+                                new DataPoint(MedDate.get(3), TF.get(3)),
+                                new DataPoint(MedDate.get(4), TF.get(4)),
+                                new DataPoint(MedDate.get(5), TF.get(5)),
+                                new DataPoint(MedDate.get(6), TF.get(6))
+                        });
+                    }
+
+
+                    //analysis
+                    graph_med.getViewport().setXAxisBoundsManual(true);
+                    graph_med.getViewport().setMinX(0);
+                    graph_med.getViewport().setMaxX(6);
+
+                    graph_med.getViewport().setYAxisBoundsManual(true);
+                    graph_med.getViewport().setMinY(0);
+                    graph_med.getViewport().setMaxY(1);//modify range later
+
+                    graph_med.getViewport().setScrollable(true);
+
+                    graph_med.addSeries(series_four);
+                    series_four.setDrawDataPoints(true);
+                    series_four.setDataPointsRadius(10);
+
+                    StaticLabelsFormatter staticLabelsFormatter_three = new StaticLabelsFormatter(graph_med);
+                    staticLabelsFormatter_three.setHorizontalLabels(new String[]{"D1", "D2", "D3", "D4", "D5", "D6", "D7"});
+                    staticLabelsFormatter_three.setVerticalLabels(new String[]{"NOT GIVEN", "GIVEN"});
+                    graph_med.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter_three);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }

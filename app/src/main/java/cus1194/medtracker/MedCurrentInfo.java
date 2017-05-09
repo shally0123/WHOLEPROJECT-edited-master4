@@ -34,6 +34,7 @@ public class MedCurrentInfo extends AppCompatActivity
     private DatabaseReference patientList;
     private DatabaseReference patientName;
     private DatabaseReference medicationList;
+    private DatabaseReference medDate;
     private DatabaseReference medicationInfo;
     private FirebaseAuth firebaseAuth;
 
@@ -46,11 +47,12 @@ public class MedCurrentInfo extends AppCompatActivity
     boolean check;
     Button save;
     Button cancel;
+    Button analysis;
     NursePhyInfo np;
 
     Date date;
 
-    protected String selectedMedKey;
+    protected static String selectedMedKey;
 
 
     @Override
@@ -65,6 +67,7 @@ public class MedCurrentInfo extends AppCompatActivity
         givenOrNotGiven = (CheckBox) findViewById(R.id.given);
         save=(Button)findViewById(R.id.saveInfo);
         cancel=(Button)findViewById(R.id.cancelInfo);
+        analysis = (Button)findViewById(R.id.edAnalysis);
 
         check = false;
         np = new NursePhyInfo();
@@ -98,7 +101,8 @@ public class MedCurrentInfo extends AppCompatActivity
         patientName = patientList.child(patientKey);
         medicationList = patientName.child("medicationList");
         medicationInfo = medicationList.child(selectedMedKey);
-        dates = medicationInfo.child(stringDate);
+        medDate = medicationInfo.child("medDates");
+        dates = medDate.child(stringDate);
 
         medicationInfo.addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,6 +131,14 @@ public class MedCurrentInfo extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MedCurrentInfo.this, PatientMain.class));
+            }
+        });
+
+        analysis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MedCurrentInfo.this, graph.class));
+
             }
         });
 

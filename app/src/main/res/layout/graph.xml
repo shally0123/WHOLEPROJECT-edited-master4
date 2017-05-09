@@ -4,6 +4,12 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/graph_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back" />
+
+    <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Blood Pressure(mmHG)
-                    BLUE-SBP  RED-DBP" />
+ SBP" />
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
@@ -30,7 +36,8 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MedTrack" />
+    android:text="Blood Pressure(mmHG)
+    DBP" />
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
@@ -41,7 +48,7 @@
         android:id="@+id/textView7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Analysis" />
+        android:text="Medication" />
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
