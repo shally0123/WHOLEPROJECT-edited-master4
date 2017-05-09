@@ -114,22 +114,15 @@ public class graph extends AppCompatActivity {
 
                     Log.d("children:", children.toString());
                     Log.d("data:", data.toString());
-
                     //Integer dt = Integer.parseInt(dataSnapshot.getChildren().toString());
-
                     series_one = new LineGraphSeries<>(new DataPoint[]{
-                            new DataPoint(0, 60)
+                            new DataPoint(0, 60),
 
-                        //new DataPoint(ww.indexOf(children), datez.indexOf(data))
+                        new DataPoint(ww.indexOf(children), datez.indexOf(data))
                     });
-
-
                 }
 
-
-
                 //weight = dataSnapshot.getValue(VitalInfo.class).weight.toString();
-
 
                 graph_weight.addSeries(series_one);
                 series_one.setDrawDataPoints(true);
