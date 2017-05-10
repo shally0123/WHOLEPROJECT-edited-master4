@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:layout_width="300dp"
         android:layout_height="50dp"
@@ -62,7 +63,6 @@
         android:text="Cancel"
         android:id="@+id/cancelMed"
         />
-    
-    
+
 
 </RelativeLayout>

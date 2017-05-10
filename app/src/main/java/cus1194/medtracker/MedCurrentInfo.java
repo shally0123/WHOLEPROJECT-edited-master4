@@ -75,7 +75,7 @@ public class MedCurrentInfo extends AppCompatActivity
 
         date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
-        String stringDate = dt.format(date);
+        final String stringDate = dt.format(date);
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -83,6 +83,7 @@ public class MedCurrentInfo extends AppCompatActivity
 
         phyID = database.getReference(user.getUid());
         patientList = phyID.child("patientList");
+
 
         Intent intent = getIntent();
         Bundle bd = intent.getExtras();
@@ -118,6 +119,43 @@ public class MedCurrentInfo extends AppCompatActivity
             }
         });
 
+        medDate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                Iterable <DataSnapshot> children = dataSnapshot.getChildren();
+
+                for (DataSnapshot child: children){
+
+                    if(child.getKey().equals(stringDate)){
+                        Log.d("db retrieve","We have a date!");
+                        NursePhyInfo nursePhyInfo = child.getValue(NursePhyInfo.class);
+                        Log.d("nurse retrieve", nursePhyInfo.name+" blah");
+                        edNurseName.setText(nursePhyInfo.name+"");
+
+                        if(nursePhyInfo.given==true)
+                        {
+                            givenOrNotGiven.setChecked(true);
+                        }
+                        else
+                            givenOrNotGiven.setChecked(false);
+
+                    }
+
+                }
+
+                Log.d("vitalList: ", stringDate + "");
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +168,7 @@ public class MedCurrentInfo extends AppCompatActivity
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                savedNurseGivenInfo();
                 startActivity(new Intent(MedCurrentInfo.this, PatientMain.class));
             }
         });
@@ -137,6 +176,7 @@ public class MedCurrentInfo extends AppCompatActivity
         analysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                savedNurseGivenInfo();
                 startActivity(new Intent(MedCurrentInfo.this, graph.class));
 
             }

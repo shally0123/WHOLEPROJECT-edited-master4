@@ -3,6 +3,7 @@ package cus1194.medtracker;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ public class PatientCalendarFragment extends Fragment {
     private DatabaseReference medicationList;
     private DatabaseReference medicationInfo;
     private FirebaseAuth firebaseAuth;
+    Button b;
 
     Date date;
 
@@ -73,10 +75,6 @@ public class PatientCalendarFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_calendar, container, false);
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
-
-    Button b;
-
-
 
 
     public void onViewCreated(View view,Bundle saveInstanceState)
@@ -102,7 +100,7 @@ public class PatientCalendarFragment extends Fragment {
 
         // get parent activity info
         String  patientKey = ((PatientMain) getActivity()).selectedPatientKey;
-        Log.d("Fragment:",patientKey);
+        Log.d("Fragment on cal: ",patientKey);
 
         patientName = patientList.child(patientKey);
         vitalList = patientName.child("vitalList");
@@ -111,16 +109,22 @@ public class PatientCalendarFragment extends Fragment {
         dates = vitalList.child(stringDate);
 
 
+
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 Log.d("Button:", "has been clicked");
-                    CalendarSettings cs = new CalendarSettings(getActivity());
-                    DatePickerDialog dialog;
-                    dialog = new DatePickerDialog(getActivity(), cs, year, month, day);
-                    dialog.show();
-/*
+                    //CalendarSettings cs = new CalendarSettings(getActivity());
+                   // DatePickerDialog dialog;
+                   // dialog = new DatePickerDialog(getActivity(), cs, year, month, day);
+                   // dialog.show();
+
+                final DialogFragment newFrag = new DialogFragment();
+                newFrag.show(getFragmentManager(), "date picker");
+
+
                 medicationList.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,9 +133,9 @@ public class PatientCalendarFragment extends Fragment {
 
                         for (DataSnapshot datedate : someDates) {
 
-                            if(dialog.toString().contains(datedate.getChildren().toString()))
+                            if(newFrag.toString().contains(datedate.getChildren().toString()))
                             {
-                                Log.d("dialog.tostring: ", dialog.toString());
+                                Log.d("dialog.tostring: ", newFrag.toString());
                                 Log.d("datedate.gc.ts: ", datedate.getChildren().toString());
 
                                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -157,7 +161,7 @@ public class PatientCalendarFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });*/
+                });
 
 
             }

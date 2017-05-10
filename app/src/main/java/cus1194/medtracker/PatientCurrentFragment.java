@@ -55,6 +55,7 @@ public class PatientCurrentFragment extends Fragment
     EditText w;
     Button addMed;
     Button analysis;
+    Button b;
     FirebaseDatabase database;
     private DatabaseReference dates;
     private DatabaseReference phyID;
@@ -99,6 +100,7 @@ public class PatientCurrentFragment extends Fragment
         addMed = (Button) v.findViewById(R.id.addMed);
         analysis = (Button)v.findViewById(R.id.edAnalysis);
         back = (TextView)v.findViewById(R.id.back);
+        b = (Button) v.findViewById(R.id.selectDate);
 
         date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
@@ -143,39 +145,9 @@ public class PatientCurrentFragment extends Fragment
                     }
 
                 }
-                /*
-                Log.d("vitalz.bloodPHigh: ", vitalz.bloodPHigh.toString());
-                Log.d("vitalz.bloodPLow: ", vitalz.bloodPLow.toString());
-                Log.d("vitalz.weight: ", vitalz.weight.toString());
-                */
-
-//                if (vitalz != null) {
-//                    Log.d("VitalInfo:", "Key:"+dataSnapshot.child(stringDate).getKey()+"| stringDate:"+stringDate);
-//                    if (dataSnapshot.child(stringDate).getKey().toString().equals(stringDate)) {
-//
-////                        Log.d("Date contains: ", dataSnapshot.child(stringDate).getValue().toString());
-//
-//
-//                        bph.setText(vitalz.bloodPHigh+"");
-//                        bpl.setText(vitalz.bloodPLow + "");
-//                        w.setText(vitalz.weight + "");
-//                    }
-//                    else
-//                    {}
-
 
                     Log.d("vitalList: ", stringDate + "");
-                   /* for(DataSnapshot vitalData: dataSnapshot.getChildren())
-                    {
-                        Log.d("date should be:", stringDate);
-                        Log.d("dataS.getChildren: ", dataSnapshot.child(stringDate).toString());
-                        if(vitalData.child(stringDate).getKey()==stringDate)
-                        {
-                            bph.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPHigh);
-                            bpl.setText(vitalData.child(stringDate).getValue(VitalInfo.class).bloodPLow);
-                            w.setText(vitalData.child(stringDate).getValue(VitalInfo.class).weight);
-                        }
-                    }*/
+
                 }
 
 
@@ -274,6 +246,7 @@ public class PatientCurrentFragment extends Fragment
                 startActivity(intent1);
             }
         });
+
 
 
 

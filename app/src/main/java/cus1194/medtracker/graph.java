@@ -502,18 +502,18 @@ public class graph extends AppCompatActivity {
 
                     series_four = new LineGraphSeries<>(new DataPoint[]{});
 
-                    for(int i = 0; i <= mm.size(); i++)
+                    for(int i = 0; i < mm.size(); i++)
                     {
                         //Log.d("mm hold: ", mm.get(i).toString());
 
-                       // if(mm.get(i)==true)
-                    //    {
+                       if(mm.get(i)==true)
+                       {
                             TF.add(1);
-                    //    }
-                    //    else
-                   //     {
-                    //        TF.add(0);
-                    //    }
+                        }
+                        else
+                        {
+                            TF.add(0);
+                        }
                     }
 
                     if(mm.size()==1) {
