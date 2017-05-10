@@ -77,10 +77,7 @@ public class graph extends AppCompatActivity {
             startActivity(new Intent(graph.this, PatientMain.class));
         }
     });
-       // ArrayList<String>weight=new ArrayList<>();
-    //ArrayList<String>sbp=new ArrayList<>();
-    //ArrayList<String>hbp=new ArrayList<>();
-    //ArrayList<boolean>medicine=new ArrayList<>();
+
         drawGraphs();
     }
 
@@ -106,9 +103,6 @@ public class graph extends AppCompatActivity {
         SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy");
         final String stringDate = dt.format(date);
         dates = vitalList.child(stringDate);
-        //VitalInfo vitalz = dataSnapshot.child(stringDate).getValue(VitalInfo.class);
-        //dates.setValue(vital);
-
 
         final ArrayList<Integer> weightDate = new ArrayList<>();
         final ArrayList<Integer> ww=new ArrayList<>();
@@ -166,19 +160,6 @@ public class graph extends AppCompatActivity {
                     series_two = new LineGraphSeries<>(new DataPoint[]{});
                     series_three = new LineGraphSeries<>(new DataPoint[]{});
 
-                    //for(int i=0; i<ww.size(); i++)
-                    //for(int www: ww) {
-                      //  for (int s: weightDate)
-                       // {
-                            //int date+"i"=ww.get(i);
-                            //int weight+"i"= weightDate.get(i);
-                       //    Log.d("WW***", ""+ww.get(i));
-                       //    Log.d("S*****", ""+weightDate.get(i));
-
-
-
-                        //}
-                    //}
 
                     if(ww.size()==1) {
                         series_one = new LineGraphSeries<>(new DataPoint[]{
